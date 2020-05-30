@@ -1,0 +1,24 @@
+on script load:
+    set {items::CatchBullet} to bowl named "<orange>弾丸キャッチ" with lore "クリック時：矢をキャッチする"
+
+on click with bowl:
+    name of player's tool contains "弾丸キャッチ"
+    {CatchBullet.%player%} is not set
+    message "<orange>キャッチ準備" to player
+    set {CatchBullet.%player%} to true
+    wait 6 ticks
+    {CatchBullet.%player%} is set
+    message "<yellow>キャッチ失敗"
+    set {CatchBullet.%player%} to false
+    wait 14 ticks
+    delete {CatchBullet.%player%}
+
+on damage:
+    projectile is arrow
+    name of victim's tool contains "弾丸キャッチ"
+    {CatchBullet.%victim%} is true
+    message "<lime>キャッチ成功！" to victim
+    delete {CatchBullet.%victim%}
+    cancel event
+    delete projectile
+    give arrow to victim

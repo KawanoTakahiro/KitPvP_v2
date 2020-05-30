@@ -1,0 +1,91 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Dullahan":
+        add "Dullahan" to {kitlist::*}
+    set {kits.Dullahan.rank} to "Eclipse"
+    set {kits.Dullahan.description} to "死の予言をすることで、敵に大ダメージを与え続けることができる。"
+    set {kits.Dullahan.mhp} to 15
+    set {kits.Dullahan.head} to {heads::dullahan}
+    set {kits.Dullahan.chest} to chainmail chestplate
+    set {kits.Dullahan.legs} to chainmail leggings
+    set {kits.Dullahan.feet} to chainmail boots
+    set {kits.Dullahan.offhand} to shield
+    add "{BlockEntityTag:{Base:15,Patterns:[{Pattern:bts,Color:14},{Pattern:tts,Color:14}]}}" to nbt of {kits.Dullahan.offhand}
+
+    delete {kits.Dullahan.items::*}
+    add iron sword to {kits.Dullahan.items::*}
+    add fishing rod named "<gray>デュラハンウィップ" with lore "釣り時：相手を盲目にする(10s)" to {kits.Dullahan.items::*}
+    add wither skeleton head named "<gray>デュラハンヘッド" with lore "右クリック時：目の前の敵に死を予言する。対象へのダメージが10倍" to {kits.Dullahan.items::*}
+    add skeleton horse egg named "<gray>デュラハンホース" to {kits.Dullahan.items::*}
+
+    delete {kits.Dullahan.eval::*}
+    add "apply Invisibility 1 to player for 80000 seconds" to {kits.Dullahan.eval::*}
+    add "delete {%%player%%.DullahanHead.waiting}" to {kits.Dullahan.eval::*}
+
+import:
+    org.bukkit.event.player.PlayerFishEvent
+
+on PlayerFishEvent:
+    name of event.getPlayer()'s tool contains "デュラハンウィップ"
+    set {_hooked} to event.getCaught()
+    apply Blindness 1 to {_hooked} for 10 seconds
+
+#6秒間予言した相手が死んだり、自分がダメージを受けなかったら予言完了
+on rightclick with wither skeleton head:
+    name of player's tool contains "デュラハンヘッド"
+    targeted entity exists
+    {%player%.DullahanHead.waiting} is not set
+    distance between player and targeted entity is smaller than 10
+    set {_target} to targeted entity
+    set {%player%.DullahanHead.waiting} to {_target}
+    set walk speed of player to 0
+
+    message "<black>これから..." to {_target} and player
+    wait 2 seconds
+    {%player%.DullahanHead.waiting} is set
+
+    message "<black>お前に..." to {_target} and player
+    wait 2 seconds
+    {%player%.DullahanHead.waiting} is set
+
+    message "<black>死が訪れる..." to {_target} and player
+    wait 2 seconds
+    {%player%.DullahanHead.waiting} is set
+    
+    message "<black>予言完了..." to {_target} and player
+    set walk speed of player to 0.2
+    set {%player%.DullahanHead.pros} to UUID of {_target}
+    delete {%player%.DullahanHead.waiting}
+
+on damage:
+    {%attacker%.DullahanHead.pros} is UUID of victim
+    set damage to damage * 10
+
+on death:
+    {%attacker%.DullahanHead.pros} is UUID of victim
+    delete {%attacker%.DullahanHead.pros}
+
+on damage:
+    {%victim%.DullahanHead.waiting} is true
+    delete {%victim%.DullahanHead.waiting}
+    message "予言は失敗に終わった..." to attacker and victim
+    set walk speed of victim to 0.2
+
+on death:
+    loop all players:
+        {%loop-player%.DullahanHead.waiting} is UUID of victim
+        delete {%loop-player%.DullahanHead.waiting}
+        message "予言は失敗に終わった..." to loop-player
+        set walk speed of loop-player to 0.2
+
+on place:
+    name of player's tool contains "デュラハンヘッド"
+    cancel event
+
+on rightclick with Skeleton Horse spawn egg:
+    cancel event
+    if name of player's tool contains "デュラハンホース":
+        spawn Skeleton Horse at player
+        add "{Tame:1,ArmorItem:{id:""minecraft:iron_horse_armor"",Count:1},SaddleItem:{id:saddle,Count:1}}" to nbt of last spawned entity
+        set name of last spawned entity to "%player%のデュラハンホース"
+        remove 1 of tool from tool

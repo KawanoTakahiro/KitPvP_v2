@@ -1,0 +1,18 @@
+on script load:
+    set {items::AttackWand} to blaze rod named "<pink>攻撃の杖" with lore "右クリック時:満腹度1消費。ダメージ2の雪玉を発射"
+
+on rightclick with blaze rod:
+	if name of player's tool contains "攻撃の杖":
+		player's food level >= 1
+		remove 1 from player's food level
+		shoot snowball from player at speed 3
+
+on shoot:
+    name of shooter's tool contains "攻撃の杖"
+    set {projectiles::%UUID of projectile%} to "AttackWand"
+
+on damage:
+    projectile is a snowball
+    {projectiles::%UUID of projectile%} is "AttackWand"
+    make attacker damage victim by 4
+    delete projectile

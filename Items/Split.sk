@@ -1,0 +1,10 @@
+on script load:
+    set {items::Split} to flint named "<gray>兜割り" with lore "攻撃時：相手の防具を壊す"
+
+on damage:
+	name of attacker's tool contains "兜割り"
+	damage victim's helmet by 1000
+	damage victim's chestplate by 1000
+	damage victim's leggings by 1000
+	damage victim's boots by 1000
+	remove 1 flint from attacker

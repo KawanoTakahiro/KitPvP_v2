@@ -1,0 +1,28 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Commander":
+        add "Commander" to {kitlist::*}
+    set {kits.Commander.rank} to "Bizarre"
+    set {kits.Commander.description} to "通常モブを大量召喚し、統率することで戦う"
+    set {kits.Commander.mhp} to 16
+    set {kits.Commander.head} to red standing banner
+    set {kits.Commander.chest} to iron chestplate
+    set {kits.Commander.legs} to leather leggings
+    dye {kits.Commander.legs} black
+    set {kits.Commander.feet} to leather boots
+    dye {kits.Commander.feet} black
+
+    delete {kits.Commander.items::*}
+    add 4 zombie spawn egg to {kits.Commander.items::*}
+    add 4 skeleton spawn egg to {kits.Commander.items::*}
+    add 4 slime spawn egg to {kits.Commander.items::*}
+    add wood sword of Knockback 2 to {kits.Commander.items::*}
+    add 4 harming splash potion to {kits.Commander.items::*}
+    add {items::LeaderWand} to {kits.Commander.items::*}
+
+    delete {kits.Commander.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Commander.eval::*}
+
+on death of player:
+    {%attacker%.kit} is "Commander"
+    give attacker 2 harming splash potion

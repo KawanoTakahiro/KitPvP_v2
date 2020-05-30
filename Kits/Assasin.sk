@@ -1,0 +1,25 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Assasin":
+        add "Assasin" to {kitlist::*}
+    set {kits.Assasin.rank} to "Occult"
+    set {kits.Assasin.description} to "様々な妨害手段を持つ。"
+    set {kits.Assasin.mhp} to 14
+    set {kits.Assasin.head} to wither skeleton skull
+    set {kits.Assasin.legs} to chainmail leggings
+    set {kits.Assasin.feet} to chainmail boots
+
+    delete {kits.Assasin.items::*}
+    add golden sword named "<red>暗殺者のナイフ" with lore "攻撃時：背後からダメージを与えた場合ダメージ5倍" to {kits.Assasin.items::*}
+    add {items::ShadowBoots} to {kits.Assasin.items::*}
+    add {items::AnethesiaGun} to {kits.Assasin.items::*}
+    add {items::AntiMagicSword} to {kits.Assasin.items::*}
+    add 10 Arrow to {kits.Assasin.items::*}
+
+    delete {kits.Assasin.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Assasin.eval::*}
+
+on damage:
+    name of attacker's tool contains "暗殺者のナイフ"
+    victim's facing is attacker's facing
+    set damage to damage * 5

@@ -1,0 +1,25 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Guardian":
+        add "Guardian" to {kitlist::*}
+    set {kits.Guardian.rank} to "Occult"
+    set {kits.Guardian.description} to "高耐久力"
+    set {kits.Guardian.mhp} to 20
+    set {kits.Guardian.head} to diamond block
+    set {kits.Guardian.chest} to diamond chestplate
+    set {kits.Guardian.legs} to iron leggings
+    set {kits.Guardian.feet} to diamond boots
+    set {kits.Guardian.offhand} to shield of Mending 2 named "<light blue>守護者の盾" with lore "ガード時：敵をノックバック"
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.Guardian.offhand}
+
+    delete {kits.Guardian.items::*}
+    add wood sword to {kits.Guardian.items::*}
+    add {items::Goods} to {kits.Guardian.items::*}
+
+    delete {kits.Guardian.eval::*}
+    add "apply Slow 2 to player for 80000 seconds" to {kits.Guardian.eval::*}
+
+on damage:
+    victim is blocking
+    name of victim's offhand tool contains "守護者の盾"
+    set velocity of attacker to vector 0, 0.5, 0 ++ normalized vector between victim and attacker

@@ -1,0 +1,48 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Ghoul":
+        add "Ghoul" to {kitlist::*}
+    set {kits.Ghoul.rank} to "Myth"
+    set {kits.Ghoul.description} to "敵の満腹度を奪い、キル時回復を持つ"
+    set {kits.Ghoul.mhp} to 24
+    set {kits.Ghoul.head} to {heads::ghoul}
+    set {kits.Ghoul.chest} to leather chestplate
+    dye {kits.Ghoul.chest} (127, 0, 0)
+    set {kits.Ghoul.legs} to leather leggings
+    dye {kits.Ghoul.legs} (0, 112, 0)
+    set {kits.Ghoul.feet} to leather boots
+    dye {kits.Ghoul.feet} black
+
+    delete {kits.Ghoul.items::*}
+    add stone axe named "<red>カンニバルアックス" with lore "攻撃時：満腹度を吸収" and "キル時：HPを半分回復" to {kits.Ghoul.items::*}
+    add bucket named "<pink>空っぽの胃" with lore "攻撃時/被ダメージ時：満腹度が低いほどダメージ増加" to {kits.Ghoul.items::*}
+
+    delete {kits.Ghoul.eval::*}
+    add "apply Hunger 100 to player for 80000 seconds" to {kits.Ghoul.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Ghoul.eval::*}
+    add "set {%%player%%.SpecialStates::NoFoodRegen} to true" to {kits.Ghoul.eval::*}
+
+on death of player:
+    name of attacker's tool contains "カンニバルアックス"
+    heal attacker by max health of attacker / 2
+
+on damage:
+    name of attacker's tool contains "カンニバルアックス"
+    remove 3 from victim's food level
+    add 3 to attacker's food level
+
+on damage:
+    if victim has bucket:
+        loop items in victim's inventory:
+            name of loop-item contains "空っぽの胃"
+            set {_has} to 1
+            exit loop
+        {_has} is set
+        set damage to damage * (1 + (10 - food level of victim) * 0.05)
+    if attacker has bucket:
+        loop items in attacker's inventory:
+            name of loop-item contains "空っぽの胃"
+            set {_has} to 1
+            exit loop
+        {_has} is set
+        set damage to damage * (1 + (10 - food level of attacker) * 0.05)

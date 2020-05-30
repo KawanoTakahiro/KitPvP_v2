@@ -1,0 +1,37 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Beast":
+        add "Beast" to {kitlist::*}
+    set {kits.Beast.rank} to "Occult"
+    set {kits.Beast.description} to "元々の身体能力が高く、索敵と逃走が得意"
+    set {kits.Beast.mhp} to 26
+
+    set {kits.Beast.head} to {heads::beast}
+    set {kits.Beast.chest} to leather chestplate
+    dye {kits.Beast.head} (112, 80, 0)
+    set {kits.Beast.legs} to leather leggings
+    dye {kits.Beast.head} (112, 80, 0)
+    set {kits.Beast.feet} to leather boots
+    enchant {kits.Beast.feet} with feather falling 5 
+    dye {kits.Beast.head} (112, 80, 0)
+
+    delete {kits.Beast.items::*}
+    add shears named "<red>鋭い爪" with lore "攻撃時：ウィザー付与" to {kits.Beast.items::*}
+    add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:3,Operation:0,UUIDLeast:1,UUIDMost:89762}]}" to nbt of {kits.Beast.items::1}
+    add 3 rabbit named "<red>鋭い嗅覚" with lore "右クリック時：10秒間周りの敵を発光させる" to {kits.Beast.items::*}
+    
+    delete {kits.Beast.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Beast.eval::*}
+    add "apply Speed 2 to player for 80000 seconds" to {kits.Beast.eval::*}
+    add "apply Strength 1 to player for 80000 seconds" to {kits.Beast.eval::*}
+    add "apply Resistance 1 to player for 80000 seconds" to {kits.Beast.eval::*}
+
+on damage:
+    name of attacker's tool contains "鋭い爪"
+    apply Wither 1 to victim for 2 seconds
+
+on rightclick:
+    name of player's tool contains "鋭い嗅覚"
+    loop entities in radius 30 around player:
+        apply Glowing 3 to loop-entity for 10 seconds
+    remove 1 rabbit from player

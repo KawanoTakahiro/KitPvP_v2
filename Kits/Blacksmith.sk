@@ -1,0 +1,18 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Blacksmith":
+        add "Blacksmith" to {kitlist::*}
+    set {kits.Blacksmith.rank} to "Bizarre"
+    set {kits.Blacksmith.description} to "相手の防具を破壊することができる"
+    set {kits.Blacksmith.mhp} to 20
+    set {kits.Blacksmith.chest} to leather chestplate
+    set {kits.Blacksmith.legs} to leather leggings
+    set {kits.Blacksmith.feet} to iron boots
+    
+    delete {kits.Blacksmith.items::*}
+    add iron sword of Sharpness 1 to {kits.Blacksmith.items::*}
+    add flint and steel to {kits.Blacksmith.items::*}
+    add 3 of {items::Split} to {kits.Blacksmith.items::*}
+
+    delete {kits.Blacksmith.eval::*}
+    add "apply Fire Resistance 1 to player for 80000 seconds" to {kits.Blacksmith.eval::*}

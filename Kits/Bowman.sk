@@ -1,0 +1,24 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Bowman":
+        add "Bowman" to {kitlist::*}
+    set {kits.Bowman.rank} to "Element"
+    set {kits.Bowman.description} to "近接戦闘でもノックバックを利用して遠距離で戦うことができる"
+    set {kits.Bowman.mhp} to 16
+    set {kits.Bowman.head} to leather helmet
+    set {kits.Bowman.chest} to leather chestplate
+    set {kits.Bowman.legs} to leather leggings
+    set {kits.Bowman.feet} to leather boots
+    
+    delete {kits.Bowman.items::*}
+    add bow of Power 1 to {kits.Bowman.items::*}
+    enchant {kits.Bowman.items::1} with Punch 1
+    enchant {kits.Bowman.items::1} with Sharpness 5
+    enchant {kits.Bowman.items::1} with Knockback 3
+    add 32 Arrow to {kits.Bowman.items::*}
+    add {items::Goods} to {kits.Bowman.items::*}
+
+    delete {kits.Bowman.eval::*}
+    add "apply Speed 2 to player for 80000 seconds" to {kits.Bowman.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Bowman.eval::*}
+    add "apply Jump 1 to player for 80000 seconds" to {kits.Bowman.eval::*}

@@ -1,0 +1,23 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Greedman":
+        add "Greedman" to {kitlist::*}
+    set {kits.Greedman.rank} to "Bizarre"
+    set {kits.Greedman.description} to "敵をキルすると相手のアイテムを全て奪うことができる"
+    set {kits.Greedman.mhp} to 28
+    set {kits.Greedman.head} to gold helmet of Fortune 3
+    set {kits.Greedman.chest} to gold chestplate of Luck of the sea 3
+    set {kits.Greedman.legs} to gold leggings of Lure 3
+    set {kits.Greedman.feet} to gold boots of Looting 3
+
+    delete {kits.Greedman.items::*}
+    add golden sword of Unbreaking 10 named "<gray>強欲の剣" with lore "キル時：敵のアイテムを奪う" to {kits.Greedman.items::*}
+    add 6 of {items::CanBeef} to {kits.Greedman.items::*}
+
+    delete {kits.Greedman.eval::*}
+    add "apply Luck 3 to player for 80000 seconds" to {kits.Greedman.eval::*}
+
+on death:
+    name of attacker's tool contains "強欲の剣"
+    loop items in victim's inventory:
+        give loop-item to attacker

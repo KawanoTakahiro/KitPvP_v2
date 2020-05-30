@@ -1,0 +1,23 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Crusader":
+        add "Crusader" to {kitlist::*}
+    set {kits.Crusader.rank} to "Myth"
+    set {kits.Crusader.description} to "高い耐久力とアンデッド、高ランクに対して特効を持つ"
+    set {kits.Crusader.mhp} to 10
+    set {kits.Crusader.head} to {heads::crusader}
+    add "{AttributeModifiers:[{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:4,Operation:0,UUIDLeast:12222,UUIDMost:2111}]}" to nbt of {kits.Crusader.head}
+    set {kits.Crusader.chest} to leather chestplate
+    dye {kits.Crusader.chest} red
+    set {kits.Crusader.legs} to iron leggings
+    set {kits.Crusader.feet} to iron boots
+    set {kits.Crusader.offhand} to shield
+    add "{BlockEntityTag:{Base:0,Patterns:[{Pattern:cs,Color:14},{Pattern:ms,Color:14}]}}" to nbt of {kits.Crusader.offhand}
+
+    delete {kits.Crusader.items::*}
+    add {items::HealWand} to {kits.Crusader.items::*}
+    add {items::SacredSword} to {kits.Crusader.items::*}
+    enchant {items::SacredSword} with Smite 5
+    delete {kits.Crusader.eval::*}
+    add "apply Absorption 5 to player for 80000 seconds" to {kits.Crusader.eval::*}
+    add "apply Fire Resistance 1 to player for 80000 seconds" to {kits.Crusader.eval::*}

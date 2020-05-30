@@ -1,0 +1,34 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Chronus":
+        add "Chronus" to {kitlist::*}
+    set {kits.Chronus.rank} to "Element"
+    set {kits.Chronus.description} to "敵の動きを止めることができる"
+    set {kits.Chronus.mhp} to 20
+    set {kits.Chronus.head} to gold helmet
+    set {kits.Chronus.chest} to leather chestplate
+    dye {kits.Chronus.chest} light aqua
+    set {kits.Chronus.legs} to gold leggings
+    set {kits.Chronus.feet} to gold boots
+    
+    delete {kits.Chronus.items::*}
+    add golden sword of Unbreaking 3 to {kits.Chronus.items::*}
+    add bow to {kits.Chronus.items::*}
+    add 32 arrow to {kits.Chronus.items::*}
+    add {items::Goods} to {kits.Chronus.items::*}
+    add clock named "<yellow>時の時計" with lore "右クリック時：敵の動きを遅くする" to {kits.Chronus.items::*}
+
+on rightclick with clock:
+    name of player's tool contains "時の時計"
+    remove 1 clock from player
+    loop players in radius 10 around player:
+        loop-player is not player
+        set walk speed of loop-player to 0
+        apply Mining Fatigue 10 to loop-player for 5 seconds
+        apply Slow Falling 1 to loop-player for 5 seconds
+        add loop-player to {_mlist::*}
+        message "<magenta>%loop-player%の動きを止めた！" to player
+        message "<magenta>%player%に動きを止められた！" to loop-player
+    wait 5 seconds
+    loop {_mlist::*}:
+        set walk speed of loop-value to 0.2

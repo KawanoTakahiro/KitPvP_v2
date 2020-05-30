@@ -1,0 +1,9 @@
+on script load:
+    set {items::HealWand} to blaze rod named "<lime>回復の杖" with lore "右クリック時:満腹度1消費。ハート1回復"
+
+on rightclick with blaze rod:
+	if name of player's tool contains "回復の杖":
+		player's health is not max health of player
+		player's food level >= 3
+		remove 3 from player's food level
+		heal player by 1 heart

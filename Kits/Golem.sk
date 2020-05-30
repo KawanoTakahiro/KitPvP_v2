@@ -1,0 +1,69 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Golem":
+        add "Golem" to {kitlist::*}
+    set {kits.Golem.rank} to "Eclipse"
+    set {kits.Golem.description} to "攻撃時自分にダメージが入る分、最高水準のHPとDPSを誇る"
+    set {kits.Golem.mhp} to 40
+    set {kits.Golem.head} to {heads::golem}
+    set {kits.Golem.chest} to leather chestplate
+    dye {kits.Golem.chest} (34, 32, 37)
+    set {kits.Golem.legs} to leather leggings
+    dye {kits.Golem.legs} (116, 67, 37)
+    set {kits.Golem.feet} to leather boots
+    dye {kits.Golem.feet} (34, 32, 37)
+
+    delete {kits.Golem.items::*}
+    add cobblestone of Knockback 3 named "<gray>ゴーレムの腕" with lore "攻撃時：1ダメージ食らう。" to {kits.Golem.items::*}
+    add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:11,Operation:0,UUIDLeast:70089521,UUIDMost:7865114}]}" to nbt of {kits.Golem.items::1}
+    set {kits.Golem.offhand} to melon seeds named "<gray>石つぶて" with lore "右クリック時：1ダメージ食らう。当たると1.5ダメージ与える飛び道具を投げる"
+    add {items::MineralMark} to {kits.Golem.items::*}
+
+    delete {kits.Golem.eval::*}
+    add "apply Slow 1 to player for 80000 seconds" to {kits.Golem.eval::*}
+
+on swap hand item:
+    name of player's tool contains "ゴーレムの腕"
+    cancel event
+
+on tool change:
+    {%player%.kit} is "Golem"
+    wait 1 tick
+    player's tool is air
+    remove a cobblestone from player
+    set player's tool to {kits.Golem.items::1}
+
+on damage:
+    name of attacker's tool contains "ゴーレムの腕"
+    damage attacker by 1
+
+on rightclick:
+    player's offhand tool is melon seeds
+    name of player's offhand tool contains "石つぶて"
+    {%player%.StoneThrow} is not set
+    set {%player%.StoneThrow} to true
+    damage player by 1
+    loop 5 times:
+        loop 6 - loop-num times:
+            shoot snowball from player at speed 1
+        wait 1 tick
+    wait 0.5 second
+    delete {%player%.StoneThrow}
+on shoot:
+    name of shooter's offhand tool contains "石つぶて"
+    set {projectiles::%UUID of projectile%} to "石つぶて"
+    set {projectiles::%UUID of projectile%.shooter} to shooter
+    wait 1 tick
+    set {_x} to random number between -0.2 and 0.2
+    set {_y} to random number between -0.2 and 0.2
+    set {_z} to random number between -0.2 and 0.2
+    set velocity of projectile to velocity of projectile ++ vector {_x},{_y},{_z}
+
+on damage:
+    projectile is a snowball
+    {projectiles::%UUID of projectile%} is "石つぶて"
+    if {projectiles::%UUID of projectile%.shooter} is victim:
+        stop
+    make attacker damage victim by 3
+    wait 1 tick
+    set victim's no damage ticks to 0

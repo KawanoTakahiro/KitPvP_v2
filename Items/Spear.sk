@@ -1,0 +1,14 @@
+on script load:
+    set {items::Spear} to carrot on a stick named "槍" with lore "左クリック時：遠い敵に攻撃"
+    add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:7821,UUIDMost:786514}]}" to nbt of {items::Spear}
+
+
+on leftclick with carrot on a stick:
+    name of player's tool contains "槍"
+    distance between player and targeted entity is smaller than 7
+    distance between player and targeted entity is smaller than distance between player and targeted block
+    make player damage targeted entity by 2
+    chance of 50%:
+        damage player's tool by 1
+        durability of player's tool is 25
+        delete player's tool

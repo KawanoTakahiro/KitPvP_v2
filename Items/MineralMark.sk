@@ -1,0 +1,12 @@
+on script load:
+    set {items::MineralMark} to iron ingot named "<light gray>無機物の印" with lore "被ダメージ時：特殊な攻撃を無効化"
+
+on damage:
+	damage was caused by poison or wither or burning or fire or drowning or lightning or starvation or potion
+	victim is offline player
+	loop items in victim's inventory:
+		name of loop-item contains "無機物の印"
+		set {_has} to 1
+		exit loop
+	{_has} is set
+	cancel event

@@ -1,0 +1,52 @@
+# 味方モブダメージ無効化
+on target:
+	name of entity contains "%target%"
+	cancel event
+
+on damage:
+	attacker is not a player
+	name of attacker contains "%victim%"
+	cancel event
+
+on rightclick with zombie spawn egg:
+	cancel event
+	spawn zombie at player
+	set name of last spawned entity to "%player%のゾンビ"
+	set last spawned entity's helmet to leather helmet
+	set {mobs::%UUID of last spawned entity%.owner} to player	
+	remove 1 of tool from tool
+
+on rightclick with skeleton spawn egg:
+	cancel event
+	spawn skeleton at player
+	set name of last spawned entity to "%player%のスケルトン"
+	set last spawned entity's helmet to leather helmet
+	set {mobs::%UUID of last spawned entity%.owner} to player	
+	remove 1 of tool from tool
+
+
+on rightclick with Spider spawn egg:
+	cancel event
+	spawn Spider at player
+	set name of last spawned entity to "%player%の蜘蛛"
+	set {mobs::%UUID of last spawned entity%.owner} to player	
+	remove 1 of tool from tool
+
+
+on rightclick with Slime spawn egg:
+	cancel event
+	spawn Slime at player
+	add "{Size:3}" to nbt of last spawned entity
+	set name of last spawned entity to "%player%のスライム"
+	set {mobs::%UUID of last spawned entity%.owner} to player	
+	remove 1 of tool from tool
+
+
+on rightclick with Horse spawn egg:
+	cancel event
+	spawn Horse at player
+	add "{Tame:1,SaddleItem:{id:saddle,Count:1}}" to nbt of last spawned entity
+	set name of last spawned entity to "%player%の馬"
+	set {mobs::%UUID of last spawned entity%.owner} to player
+	remove 1 of tool from tool
+

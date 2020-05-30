@@ -1,0 +1,181 @@
+command /gm:
+	trigger:
+		if player's gamemode is survival:
+			set player's gamemode to creative
+		else:
+			set player's gamemode to survival
+
+command /evaluate <text>:
+	trigger:
+		evaluate arg
+
+command /roll <integer>:
+	trigger:
+		set {_var} to random integer between 1 and arg
+		broadcast "<yellow>%{_var}%"
+
+on damage:
+	set {_damage} to health of victim
+	wait 1 tick
+	victim's name is "SandBag"
+	set {_finalDamage} to {_damage} - health of victim
+	add {_finalDamage} to {dps.%attacker%.damage}
+	message "<red>------------------------" to attacker
+	message "ダメージ(補正無/補正有)：%damage%/%{_finalDamage}%" to attacker
+	attacker's gamemode is creative
+	attacker is sneaking
+	kill victim
+
+on rightclick:
+	name of clicked entity is "SandBag"
+	if player is sneaking:
+		equip clicked entity with player's tool
+	else:
+		{isDPS} is false
+		heal clicked entity
+		set {isDPS} to true
+		message "<orange>10秒間でDPSを計測します" to player
+		wait 1 seconds
+		message "<orange>3..." to player
+		wait 1 seconds
+		message "<orange>2..." to player
+		wait 1 seconds
+		message "<orange>1..." to player
+		wait 1 seconds
+		message "<orange>Start!" to player
+		set {_hp} to health of clicked entity
+		wait 10 seconds
+		message "<orange>Stop!" to player
+		set {_damage} to {_hp} - health of clicked entity
+		message "<lime>総ダメージ量:%{_damage}%" to player
+		message "<lime>DPS:%{_damage}/10%" to player
+		set {isDPS} to false
+
+command /sandbag:
+	permission: op
+	trigger:
+		summon stray at player
+		set name of last spawned entity to "SandBag"
+		set max health of last spawned entity to 10000
+		set AI of last spawned entity to false
+		apply Fire Resistance 1 to last spawned entity for 80000 seconds
+		heal last spawned entity
+
+command /effecttime <number>:
+	permission: op
+	trigger:
+		loop arg times:
+			send action bar "%arg - loop-number%" to player
+			wait 1 second
+
+command /kit <text> <integer=0>:
+	trigger:
+		set {_leng} to length of arg-1
+		loop sorted {kitlist::*}:
+			set {_cut} to the first {_leng} characters of "%loop-value%"
+			{_cut} contains arg-1
+			set {_kit} to loop-value
+			exit loop
+
+		if {_kit} is not set:
+			if arg-1 is "gm":
+				execute player command "/job gm"
+				stop
+			message "<yellow>該当するキットは存在しません" to player
+			stop
+		
+		if arg-2 is 0:
+			{%player%.kitlist::*} doesn't contain {_kit}
+			message "<yellow>%{_kit}%<yellow>を開放していません"
+			stop
+		delete player's inventory
+		execute console command "/effect clear %player%"
+		delete {%player%.SpecialStates::*}
+		set {%player%.kit} to {_kit}
+		apply Saturation 100 to player for 1 second
+
+		set max health of player to {kits.%{_kit}%.mhp}
+		set player's helmet to {kits.%{_kit}%.head}
+		set player's chestplate to {kits.%{_kit}%.chest}
+		set player's leggings to {kits.%{_kit}%.legs}
+		set player's boots to {kits.%{_kit}%.feet}
+		set player's offhand tool to {kits.%{_kit}%.offhand}
+		loop {kits.%{_kit}%.items::*}:
+			give player loop-value
+		loop {kits.%{_kit}%.eval::*}:
+			evaluate loop-value
+
+		set {_rank} to {kits.%{_kit}%.rank}
+		message "<yellow>You've taken <Italic>%{_kit}%"
+		message "Kit Name:%{_kit}%"
+		message "Kit Rank:<%{Rank.%{_rank}%.color}%>%{_rank}%"
+		message "説明：%{kits.%{_kit}%.description}%"
+
+		wait 1 tick
+		heal player
+
+command /buykit <text>:
+	trigger:
+		set {_kit} to arg-1
+		if {kitlist::*} doesn't contain {_kit}:
+			message "<yellow>%{_kit}%<yellow>は存在しません"
+			stop
+		if {%player%.kitlist::*} contains {_kit}:
+			message "<yellow>%{_kit}%<yellow>はすでに所有しています"
+			stop
+		set {_rank} to {kits.%{_kit}%.rank}
+		set {_price} to {Rank.%{_rank}%.price}
+		if {_price} > {%player%.point}:
+			message "<yellow>ポイントが足りません"
+			stop
+		add {_kit} to {%player%.kitlist::*}
+		subtract {_price} from {%player%.point}
+		message "<%{Rank.%{_rank}%.color}%>%{_kit}%<lime>を購入しました！"
+		message "所有ポイント:%{%player%.point}%"
+
+command /rkit:
+	trigger:
+		set {_rkit} to random element of {%player%.kitlist::*}
+		execute player command "/kit %{_rkit}%"
+
+command /kitlist <text="">:
+	trigger:
+		loop sorted {kitlist::*}:
+			set {_kit} to loop-value
+			set {_rank} to {kits.%{_kit}%.rank}
+			set {_description} to {kits.%{_kit}%.description}
+			if arg is not "":
+				{_rank} is not arg
+				continue
+			if {%player%.kitlist::*} doesn't contain loop-value:
+				message "<light gray>%loop-value%:<<pink>開放ポイント:%{Rank.%{_rank}%.price}%>"
+				continue
+			message "<%{Rank.%{_rank}%.color}%>%{_kit}%:<white>%{_description}%"
+
+command /damage <number>:
+	trigger:
+		damage player by arg
+
+command /head <text> <text="">:
+    trigger:
+        if arg-1 is "set":
+            set {heads::%arg-2%} to player's tool
+        if arg-1 is "list":
+            loop {heads::*}:
+                message "%loop-index%:%loop-value%"
+
+command /potion <text> <text="">:
+    trigger:
+        if arg-1 is "set":
+            set {potions::%arg-2%} to player's tool
+        if arg-1 is "list":
+            message "%{potions::*}%"
+
+command /endtest <number>:
+	trigger:
+		set {_cnt} to 0
+		while player is alive:
+			make player damage player by arg
+			add 1 to {_cnt}
+			wait 1 second
+		broadcast "%{_cnt}%"

@@ -1,0 +1,21 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Bizarre":
+        add "Avenger" to {kitlist::*}
+    set {kits.Avenger.rank} to "Element"
+    set {kits.Avenger.description} to "他のプレイヤーが倒される度強くなる"
+    set {kits.Avenger.mhp} to 20
+    set {kits.Avenger.head} to black glazed terracotta
+    set {kits.Avenger.chest} to leather chestplate
+    dye {kits.Avenger.chest} red
+    set {kits.Avenger.legs} to leather leggings
+    dye {kits.Avenger.legs} red
+    set {kits.Avenger.feet} to leather boots
+    dye {kits.Avenger.feet} red
+    set {kits.Avenger.offhand} to {items::AvengeSoul}
+
+    delete {kits.Avenger.items::*}
+    add wood sword to {kits.Avenger.items::*}
+
+    delete {kits.Avenger.eval::*}
+    add "set {%%player%%.AvengeSoulValue} to 0" to {kits.Avenger.eval::*}

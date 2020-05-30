@@ -1,0 +1,45 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Cavalry":
+        add "Cavalry" to {kitlist::*}
+    set {kits.Cavalry.rank} to "Element"
+    set {kits.Cavalry.description} to "馬に乗り戦う。高い機動力と突貫スキルをもつ。"
+    set {kits.Cavalry.mhp} to 20
+    set {kits.Cavalry.head} to red standing banner
+    set {kits.Cavalry.chest} to chainmail chestplate
+    set {kits.Cavalry.legs} to leather leggings
+    set {kits.Cavalry.feet} to leather boots
+
+    delete {kits.Cavalry.items::*}
+    add {items::Spear} to {kits.Cavalry.items::*}
+    add Bow to {kits.Cavalry.items::*}
+    add red standing banner named "<orange>突貫" with lore "右クリック時：馬に乗っている場合前方に突っ込む" to {kits.Cavalry.items::*}
+    add horse spawn egg to {kits.Cavalry.items::*}
+    add 32 arrow to {kits.Cavalry.items::*}
+    add {items::Goods} to {kits.Cavalry.items::*}
+
+on rightclick with red standing banner:
+    {%player%.Rush.vehicle} is not set
+    {%player%.Rush.cooltime} is not set
+    name of player's tool contains "突貫"
+    cancel event
+    block 10 meters horizontally forward player is a air
+    vehicle of player is a horse
+    set {%player%.Rush.vehicle} to vehicle of player
+    loop all entities in radius 5 around player:
+        loop-entity is not player
+        make player damage loop-entity by 6
+    make player to dismount from any vehicle
+    teleport {%player%.Rush.vehicle} to location of block 10 meters horizontally forward player
+    make player ride on {%player%.Rush.vehicle}
+    loop all entities in radius 5 around {%player%.Rush.vehicle}:
+        loop-entity is not player
+        make player damage loop-entity by 6
+    set {%player%.Rush.cooltime} to 10
+    loop 10 times:
+        wait 1 seconds
+        subtract 1 from {%player%.Rush.cooltime}
+        if name of player's tool contains "突貫":
+            send action bar "%{%player%.Rush.cooltime}%" to player
+    delete {%player%.Rush.cooltime}
+    delete {%player%.Rush.vehicle}

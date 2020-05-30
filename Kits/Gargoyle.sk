@@ -1,0 +1,37 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Gargoyle":
+        add "Gargoyle" to {kitlist::*}
+    set {kits.Gargoyle.rank} to "Bizarre"
+    set {kits.Gargoyle.description} to "特殊攻撃に強く耐久性もそこそこ。機動力を生かしたストンプ攻撃が可能"
+    set {kits.Gargoyle.mhp} to 20
+    set {kits.Gargoyle.head} to {heads::gargoyle}
+    set {kits.Gargoyle.chest} to leather chestplate of Protection 5
+    dye {kits.Gargoyle.chest} gray
+    set {kits.Gargoyle.legs} to leather leggings of Projectile Protection 5
+    dye {kits.Gargoyle.legs} gray
+    set {kits.Gargoyle.feet} to leather boots of Blast Protection 5
+    dye {kits.Gargoyle.feet} gray
+
+    delete {kits.Gargoyle.items::*}
+    add stone sword to {kits.Gargoyle.items::*}
+    add anvil named "<red>ストンプ" with lore "右クリック時：急降下し、周りの敵にダメージ" to {kits.Gargoyle.items::*}
+    add {items::MineralMark} to {kits.Gargoyle.items::*}
+    add {items::DoubleJump} to {kits.Gargoyle.items::*}
+
+    delete {kits.Gargoyle.eval::*}
+    add "apply Slow Falling 1 to player for 80000 seconds" to {kits.Gargoyle.eval::*}
+    add "apply Slow 2 to player for 80000 seconds" to {kits.Gargoyle.eval::*}
+
+
+on rightclick with anvil:
+    name of player's tool contains "ストンプ"
+    block below player is air
+    cancel event
+    set velocity of player to vector 0, -1, 0
+    set {_height} to altitude of player
+    while block below player is air:
+        wait 2 ticks
+    set {_mul} to ({_height} - altitude of player) / 5
+    loop entities in radius 10 around player:
+        make player damage loop-entity by (10 - distance between player and loop-entity)*{_mul}

@@ -1,0 +1,18 @@
+on script load:
+    set {items::SacredSword} to iron sword named "<yellow>聖剣" with lore "攻撃時：敵のランクに応じてダメージが上昇する"
+
+on damage:
+    name of attacker's tool is "聖剣"
+    set {_kit} to {%victim%.kit}
+    set {_rank} to {kits.%{_kit}%.rank}
+    apply Glowing 1 to victim for 10 seconds
+    if {_rank} is "Element":
+        set damage to damage/2
+    else if {_rank} is "Bizarre":
+        stop
+    else if {_rank} is "Occult":
+        set damage to damage * 1.2
+    else if {_rank} is "Myth":
+        set damage to damage * 1.5
+    else if {_rank} is "Eclipse":
+        set damage to damage * 2

@@ -1,0 +1,45 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Fighter":
+        add "Fighter" to {kitlist::*}
+    set {kits.Fighter.rank} to "Element"
+    set {kits.Fighter.description} to "カウンター攻撃ができる。また、瀕死時に一度だけ復活できる"
+    set {kits.Fighter.mhp} to 16
+    set {kits.Fighter.head} to gold helmet of Protection 3
+    set {kits.Fighter.chest} to leather chestplate of Unbreaking 3
+    dye {kits.Fighter.chest} red
+    set {kits.Fighter.legs} to chainmail leggings
+    set {kits.Fighter.feet} to iron boots
+
+    delete {kits.Fighter.items::*}
+    add stone sword named "<red>闘士の剣" with lore "右クリック時：敵の攻撃をカウンターする" to {kits.Fighter.items::*}
+    add magma cream named "<orange>起死回生" with lore "右クリック時：体力が25％以下の時使用可能。追加体力8を5秒間得る" to {kits.Fighter.items::*}
+    add {items::Goods} to {kits.Fighter.items::*}
+
+    delete {kits.Fighter.eval::*}
+
+on rightclick with stone sword:
+    name of player's tool contains "闘士の剣"
+    {FighterSword.%player%} is not set
+    message "<orange>カウンター準備" to player
+    set {FighterSword.%player%} to true
+    wait 6 ticks
+    {FighterSword.%player%} is set
+    message "<yellow>カウンター失敗"
+    set {FighterSword.%player%} to false
+    wait 14 ticks
+    delete {FighterSword.%player%}
+
+on damage:
+    name of victim's tool contains "闘士の剣"
+    {FighterSword.%victim%} is true
+    message "<lime>カウンター成功！" to victim
+    delete {FighterSword.%victim%}
+    cancel event
+    make victim damage attacker by damage*2
+
+on rightclick with magma cream:
+    name of player's tool contains "起死回生"
+    player's health <= player's max health / 4
+    apply Absorption 4 to player for 5 seconds
+    remove 1 of tool from tool

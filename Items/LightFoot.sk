@@ -1,0 +1,21 @@
+on script load:
+    set {items::LightFoot} to leather boots named "<light aqua>軽装兵の足さばき" with lore "被ダメージ時(20%%)：攻撃を回避する。次のダメージ1.5倍"
+on damage:
+    victim is a player
+    victim has leather boots
+    loop items in victim's inventory:
+        name of loop-item contains "軽装兵の足さばき"
+        set {_has} to 1
+        exit loop
+    {_has} is set
+    chance of 20%:
+        cancel event
+        message "<lime>攻撃を回避した！" to victim
+        message "<yellow>攻撃を回避された！" to attacker
+        set {%victim%.LightFoot.dodge} to true
+
+on damage:
+    {%attacker%.LightFoot.dodge} is set
+    set damage to damage * 1.5
+    message "<red>クリティカル！！！" to attacker
+    delete {%attacker%.LightFoot.dodge}

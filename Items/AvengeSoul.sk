@@ -1,0 +1,19 @@
+on script load:
+    set {items::AvengeSoul} to blaze powder named "<orange>復讐心" with lore "プレイヤー死亡時：攻撃力が1上がる"
+
+on death:
+    victim is a player
+    loop all players:
+        loop-player is not attacker
+        name of loop-player's offhand tool contains "復讐心"
+        if {%loop-player%.AvengeSoul.value} is set:
+            add 1 to {%loop-player%.AvengeSoul.value}
+        add "{AttributeModifiers:[{Slot:offhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:%{%loop-player%.AvengeSoul.value}%,Operation:0,UUIDLeast:44444,UUIDMost:71114}]}" to nbt of loop-player's offhand tool
+
+on death:
+    victim is a player
+    {%attacker%.AvengeSoul.value} is set
+    set {%attacker%.AvengeSoul.value} to 0
+    loop items in attacker's inventory:
+        name of loop-item contains "復讐心"
+        add "{AttributeModifiers:[{Slot:offhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:0,Operation:0,UUIDLeast:44444,UUIDMost:71114}]}" to nbt of loop-item

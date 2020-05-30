@@ -1,0 +1,36 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Alien":
+        add "Alien" to {kitlist::*}
+    set {kits.Alien.rank} to "Bizarre"
+    set {kits.Alien.description} to "高い機動力と様々な耐性を持つ。酸による攻撃が主体。"
+    set {kits.Alien.mhp} to 24
+    set {kits.Alien.head} to {heads::alien}
+    enchant {kits.Alien.head} with Protection 1
+    set {kits.Alien.chest} to leather chestplate
+    dye {kits.Alien.chest} lime
+    enchant {kits.Alien.chest} with Thorns 1
+    set {kits.Alien.legs} to leather leggings
+    dye {kits.Alien.legs} lime
+    enchant {kits.Alien.legs} with Projectile Protection 1
+    set {kits.Alien.feet} to leather boots
+    dye {kits.Alien.feet} lime
+    enchant {kits.Alien.feet} with Fire Protection 1
+
+    delete {kits.Alien.items::*}
+    add golden sword of Unbreaking 1 named "<lime>酸牙" with lore "攻撃時：敵のアーマーに追加ダメージ" to {kits.Alien.items::*}
+    add 3 of {potions::acid} to {kits.Alien.items::*}
+    delete {kits.Alien.eval::*}
+    add "apply Speed 3 to player for 80000 seconds" to {kits.Alien.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Alien.eval::*}
+
+on damage:
+    name of attacker's tool contains "酸牙"
+    damage victim's helmet by 5
+    damage victim's chestplate by 5
+    damage victim's leggings by 5
+    damage victim's boots by 5
+
+on death of player:
+    {%attacker%.kit} is "Alien"
+    give attacker 2 of {potions::acid}

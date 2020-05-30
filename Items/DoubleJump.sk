@@ -1,0 +1,17 @@
+on script load:
+	set {items::DoubleJump} to feather named "<yellow>2段ジャンプ" with lore "空中スニーク時：前上方にジャンプする"
+
+on sneak toggle:
+	if {%player%.DoubleJump.value} is not set:
+		set {%player%.DoubleJump.value} to 0
+	{%player%.DoubleJump.value} is 0
+	loop items in player's inventory:
+		name of loop-item contains "2段ジャンプ"
+		set {_has} to 1
+	{_has} is set
+	block below location of player is air
+	set velocity of player to vector 0, 0.5, 0 ++ vector between player and location 1 meter in front of player
+	set {%player%.DoubleJump.value} to 1
+	while block below location of player is air:
+		wait 2 ticks
+	set {%player%.DoubleJump.value} to 0

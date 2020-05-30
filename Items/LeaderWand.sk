@@ -1,0 +1,21 @@
+on script load:
+    set {items::LeaderWand} to bone named "<red>統率の杖" with lore "右クリック：満腹度2消費。味方モブを呼び寄せる" and "左クリック：満腹度2消費。味方モブをけしかける"
+
+on rightclick with bone:
+	if name of player's tool contains "統率の杖":
+		player's food level >= 2
+		remove 2 from player's food level
+		loop all entities:
+			loop-entity is not player
+			name of loop-entity contains "%player%"
+			teleport loop-entity to player
+
+on leftclick with bone:
+	target exists
+	if name of player's tool contains "統率の杖":
+		player's food level >= 2
+		remove 2 from player's food level
+		loop all entities:
+			loop-entity is not player
+			name of loop-entity contains "%player%"
+			set target of loop-entity to target

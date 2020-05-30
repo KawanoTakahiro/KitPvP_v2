@@ -1,0 +1,46 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Frankenstein":
+        add "Frankenstein" to {kitlist::*}
+    set {kits.Frankenstein.rank} to "Bizarre"
+    set {kits.Frankenstein.description} to "敵が倒されたとき、名もなき怪物を産み出せる"
+    set {kits.Frankenstein.mhp} to 20
+    set {kits.Frankenstein.chest} to leather chestplate
+    dye {kits.Frankenstein.chest} white
+    set {kits.Frankenstein.legs} to leather leggings
+    set {kits.Frankenstein.feet} to leather boots
+
+    delete {kits.Frankenstein.items::*}
+    add stone sword to {kits.Frankenstein.items::*}
+    add rotten flesh named "<green>名もなき怪物の素材" with lore "右クリック時:名もなき怪物をスポーン" to {kits.Frankenstein.items::*}
+
+    delete {kits.Frankenstein.eval::*}
+
+on rightclick with rotten flesh:
+    name of player's tool contains "名もなき怪物の素材"
+    cancel event
+    strike lightning effect at player
+    spawn zombie at player
+    set max health of last spawned entity to 30
+    set name of last spawned entity to "名もなき怪物"
+    equip last spawned entity with diamond chestplate
+    equip last spawned entity with leather leggings
+    equip last spawned entity with chainmail boots
+    heal last spawned entity
+    apply Poison 3 to last spawned entity for 80000 seconds
+    apply Strength 4 to last spawned entity for 80000 seconds
+    apply Fire Resistance 1 to last spawned entity for 80000 seconds
+    remove 1 of tool from tool
+
+on damage:
+    name of victim contains "名もなき怪物"
+    damage was caused by fall, fire, burning, lava, potion, wither, unknown or magma
+    set damage to damage * 1.5
+    broadcast "%victim's health%"
+
+on death:
+    victim is a player
+    loop all players:
+        {%loop-player%.kit} is "Frankenstein"
+        give loop-player rotten flesh named "<green>名もなき怪物の素材" with lore "右クリック時:名もなき怪物をスポーン"
+

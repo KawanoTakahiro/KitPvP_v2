@@ -1,0 +1,117 @@
+
+# ランク色とランク開放コストの設定
+on script load:
+    set {Rank.Element.price} to 100
+    set {Rank.Bizarre.price} to 300
+    set {Rank.Occult.price} to 500
+    set {Rank.Myth.price} to 700
+    set {Rank.Eclipse.price} to 1000
+    
+    set {Rank.Element.color} to "lime"
+    set {Rank.Bizarre.color} to "cyan"
+    set {Rank.Occult.color} to "yellow"
+    set {Rank.Myth.color} to "purple"
+    set {Rank.Eclipse.color} to "red"
+
+# 新規の初期化
+on first join:
+    init(player)
+
+# キット全開放コマンド
+command /allopen:
+    trigger:
+        delete {%player%.kitlist::*}
+        loop {kitlist::*}:
+            add loop-value to {%player%.kitlist::*}
+
+# Stats初期化コマンド
+command /initialize <player=%player%>:
+    trigger:
+        init(arg)
+
+# Stats表示コマンド
+command /stats <player=%player%>:
+    trigger:
+        message "キル数:%{%player%.kill}%"
+        message "デス数:%{%player%.death}%"
+        message "最高キルストリーク:%{%player%.maxkillstreak}%"
+        message "所有ポイント:%{%player%.point}%"
+        message "総ダメージ数:%{%player%.damage}%"
+        message "総被ダメージ数:%{%player%.damaged}%"
+
+
+function init(p:player):
+    set {%{_p}%.kit} to ""
+    set {%{_p}%.kill} to 0
+    set {%{_p}%.death} to 0
+    set {%{_p}%.damage} to 0
+    set {%{_p}%.damaged} to 0
+    set {%{_p}%.killstreak} to 0
+    set {%{_p}%.maxkillstreak} to 0
+    set {%{_p}%.point} to 0
+    #set {%{_p}%.cumpoint} to 0
+    delete {%{_p}%.kitlist::*}
+    add "Archer" to {%{_p}%.kitlist::*}
+
+# ポイント付与コマンド
+command /point <text> <integer>:
+    trigger:
+        if arg-1 is "change":
+            changePoint(player, arg-2)
+        if arg-1 is "set":
+            setPoint(player, arg-2)
+        if arg-1 is "show":
+            # pass
+        message "所有ポイント:%{%player%.point}%"
+
+# ダメージ監視
+on damage:
+    attacker is a player
+    {game.players::*} contains attacker
+    set {_hp} to health of victim
+    wait 1 tick
+    set {_damage} to max(0, {_hp} - health of victim)
+    add {_damage} to {%attacker%.damage}
+
+# モブによるダメージ監視
+on damage:
+	attacker is not a player
+	{mobs::%UUID of attacker%.owner} exists
+	set {_attacker} to {mobs::%UUID of attacker%.owner}
+	{game.players::*} contains {_attacker}
+	set {_hp} to health of victim
+	wait 1 tick
+	set {_damage} to max(0, {_hp} - health of victim)
+	add {_damage} to {_player}
+
+# 被ダメージ監視
+on damage:
+    victim is a player
+    {game.players::*} contains victim
+    set {_hp} to health of victim
+    wait 1 tick
+    set {_damage} to max(0, {_hp} - health of victim)
+    add {_damage} to {%victim%.damaged}
+
+# キルデス監視
+on death:
+    victim is a player
+    {game.players::*} contains victim
+    add 1 to {%victim%.death}
+    if attacker is a player:
+        {game.players::*} contains attacker
+        add 1 to {%attacker%.kill}
+    else:
+        {mobs::%UUID of attacker%} exists
+        set {_attacker} to {mobs::%UUID of attacker%}
+        {game.players::*} contains {_attacker}
+        add 1 to {%{_attacker}%.kill}
+    
+
+function changePoint(p:player, i:integer):
+    set {%{_p}%.point} to {%{_p}%.point} + {_i}
+
+function setPoint(p:player, i:integer):
+    set {%{_p}%.point} to {_i}
+
+

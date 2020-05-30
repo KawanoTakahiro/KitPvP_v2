@@ -1,0 +1,43 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Archer":
+        add "Archer" to {kitlist::*}
+    set {kits.Archer.rank} to "Element"
+    set {kits.Archer.description} to "無限に矢を打て、敵の矢をキャッチすることもできる"
+    set {kits.Archer.mhp} to 18
+    set {kits.Archer.head} to chainmail helmet of Projectile Protection 3
+    set {kits.Archer.chest} to chainmail chestplate
+    set {kits.Archer.legs} to chainmail leggings
+    set {kits.Archer.feet} to chainmail boots
+
+    delete {kits.Archer.items::*}
+    add bow of Infinity 1 named "<red>達人の弓" to {kits.Archer.items::*}
+    add {items::Mit} to {kits.Archer.items::*}
+    add 1 Arrow to {kits.Archer.items::*}
+    add {items::Goods} to {kits.Archer.items::*}
+
+    delete {kits.Archer.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Archer.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Archer.eval::*}
+
+on click with bowl:
+    name of player's tool contains "弾丸キャッチ"
+    {ChatchBullet.%player%} is not set
+    message "<orange>キャッチ準備" to player
+    set {ChatchBullet.%player%} to true
+    wait 6 ticks
+    {ChatchBullet.%player%} is set
+    message "<yellow>キャッチ失敗"
+    set {ChatchBullet.%player%} to false
+    wait 14 ticks
+    delete {ChatchBullet.%player%}
+
+on damage:
+    projectile is arrow
+    name of victim's tool contains "弾丸キャッチ"
+    {ChatchBullet.%victim%} is true
+    message "<lime>キャッチ成功！" to victim
+    delete {ChatchBullet.%victim%}
+    cancel event
+    delete projectile
+    give arrow to victim

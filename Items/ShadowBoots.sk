@@ -1,0 +1,33 @@
+on script load:
+    set {items::ShadowBoots} to chainmail boots named "<black>影縫い" with lore "スニーク時：透明化し移動速度が上昇する"
+
+on sneak toggle:
+	if player is not sneaking:
+		name of player's tool contains "影縫い"
+		apply Invisibility 1 to player for 80000 seconds
+		set walk speed of player to 0.7
+		set {%player%.ShadowBoots.armor::1} to player's helmet
+		set {%player%.ShadowBoots.armor::2} to player's chestplate
+		set {%player%.ShadowBoots.armor::3} to player's leggings
+		set {%player%.ShadowBoots.armor::4} to player's boots
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+	else:
+		loop items in player's inventory:
+			name of loop-item contains "影縫い"
+			set {_has} to 1
+			exit loop
+		{_has} is set
+		set walk speed of player to 0.2
+		remove Invisibility from player
+		equip player with {%player%.ShadowBoots.armor::1}
+		equip player with {%player%.ShadowBoots.armor::2}
+		equip player with {%player%.ShadowBoots.armor::3}
+		equip player with {%player%.ShadowBoots.armor::4}
+		delete {%player%.ShadowBoots.armor::*}
+
+on rightclick with chainmail boots:
+	name of player's tool contains "影縫い"
+	cancel event

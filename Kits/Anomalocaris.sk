@@ -1,0 +1,36 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Anomalocaris":
+        add "Anomalocaris" to {kitlist::*}
+    set {kits.Anomalocaris.rank} to "Occult"
+    set {kits.Anomalocaris.description} to "高耐久かつ厄介な紙魚を大量に生み出す。"
+    set {kits.Anomalocaris.mhp} to 10
+    set {kits.Anomalocaris.head} to {heads::anomalocaris}
+    add "{AttributeModifiers:[{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:10,Operation:0,UUIDLeast:1,UUIDMost:2}]}" to nbt of {kits.Anomalocaris.head}
+    set {kits.Anomalocaris.chest} to leather chestplate
+    dye {kits.Anomalocaris.chest} gray
+    add "{AttributeModifiers:[{Slot:chest,AttributeName:generic.armor,Name:generic.armor,Amount:10,Operation:0,UUIDLeast:1,UUIDMost:2123}]}" to nbt of {kits.Anomalocaris.chest}
+    set {kits.Anomalocaris.legs} to leather leggings
+    dye {kits.Anomalocaris.legs} gray
+    add "{AttributeModifiers:[{Slot:legs,AttributeName:generic.armor,Name:generic.armor,Amount:10,Operation:0,UUIDLeast:1,UUIDMost:1232}]}" to nbt of {kits.Anomalocaris.legs}
+    set {kits.Anomalocaris.feet} to leather boots
+    dye {kits.Anomalocaris.feet} gray
+    add "{AttributeModifiers:[{Slot:feet,AttributeName:generic.armor,Name:generic.armor,Amount:10,Operation:0,UUIDLeast:1,UUIDMost:2222}]}" to nbt of {kits.Anomalocaris.feet}
+    delete {kits.Anomalocaris.items::*}
+    add stone sword to {kits.Anomalocaris.items::*}
+    add silverfish spawn egg named "<light gray>古代の仲間" with lore "被ダメージ時33%%：紙魚を生み出す" to {kits.Anomalocaris.items::*}
+    
+    delete {kits.Anomalocaris.eval::*}
+    add "apply Slow 3 to player for 80000 seconds" to {kits.Anomalocaris.eval::*}
+    add "apply Jump 200 to player for 80000 seconds" to {kits.Anomalocaris.eval::*}
+
+on damage:
+    chance of 33%:
+        loop items in victim's inventory:
+            name of loop-item contains "古代の仲間"
+            set {_has} to 1
+            exit loop
+        {_has} is set
+        spawn silverfish at victim
+        set name of last spawned entity to "%victim%の仲間"
+        set {mobs::%UUID of last spawned entity%.owner} to victim	

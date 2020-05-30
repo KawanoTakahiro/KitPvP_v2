@@ -1,0 +1,90 @@
+command /start <string> <integer=4>:
+    trigger:
+        if arg-1 is "Stock":
+            set {game.mode} to "Stock"
+            set {game.players::*} to all players
+            set {game.results::1} to "<magenta>=====結果====="
+            loop all players:
+                set {%loop-player%.stock} to arg-2
+                set level of loop-player to arg-2
+                set {%loop-player%.killstreak} to 0
+                execute loop-player command "/spawnpoint"
+        send title "<orange>%arg-2%ストック戦" with subtitle "%{game.players::*}%" to all players for 3 seconds
+        wait 3 seconds
+        send title "<lime>3" to all players
+        wait 1 seconds
+        send title "<yellow>2" to all players
+        wait 1 seconds
+        send title "<red>1" to all players
+        wait 1 seconds
+        send title "<orange>GO!" to all players
+        while size of {game.players::*} > 1:
+            wait 1 seconds
+        add "<orange>1位 %{game.players::*}%" to {game.results::*}
+        loop {game.results::*}:
+            broadcast "%loop-value%"
+        delete {game.type}
+        delete {game.players::*}
+        delete {game.results::*}
+
+on respawn:
+	wait 1 tick
+	{gametype} is "Stock"
+	set level of player to {stock.%player%}
+    
+on death of player:
+    {game.type} is "Stock"
+    remove 1 from {stock.%victim%}
+    {stock.%victim%} is 0
+    broadcast "<red>%victim%さんが脱落しました。"
+    add "%size of {game.players::*}%位 %victim%" to {game.results::*}
+    wait 1 tick #stats用
+    remove victim from {game.players::*}
+
+#回復キット
+on rightclick on redstone block:
+    block under event-block is anvil
+    set event-block to red stained glass
+    set {_kit} to {%player%.kit}
+    if {kits.%{_kit}%.rank} is "Element":
+        heal player by max health of player * 0.5
+    if {kits.%{_kit}%.rank} is "Bizarre":
+        heal player by max health of player * 0.4
+    if {kits.%{_kit}%.rank} is "Occult":
+        heal player by max health of player * 0.3
+    if {kits.%{_kit}%.rank} is "Myth":
+        heal player by max health of player * 0.25
+    if {kits.%{_kit}%.rank} is "Eclipse":
+        heal player by max health of player * 0.2
+    wait 10 seconds
+    set event-block to redstone block
+
+#補給キット
+on rightclick on dispenser:
+    block under event-block is anvil
+    set {_eb} to type of event-block
+    set event-block to black stained glass
+    set {_kit} to {%player%.kit}
+    if player have bow:
+        if {kits.%{_kit}%.rank} is "Element":
+            give 32 arrows to player
+        if {kits.%{_kit}%.rank} is "Bizarre":
+            give 24 arrows to player
+        if {kits.%{_kit}%.rank} is "Occult":
+            give 16 arrows to player
+        if {kits.%{_kit}%.rank} is "Myth":
+            give 12 arrows to player
+        if {kits.%{_kit}%.rank} is "Eclipse":
+            give 8 arrows to player
+    loop all items in player's inventory:
+        repair loop-item
+    wait 10 seconds
+    set event-block to {_eb}
+
+on rightclick on anvil:
+    player's gamemode is not creative
+    cancel event
+
+on place:
+    name of player's tool exists
+    cancel event

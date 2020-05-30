@@ -1,0 +1,19 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Crossbowman":
+        add "Crossbowman" to {kitlist::*}
+    set {kits.Crossbowman.rank} to "Element"
+    set {kits.Crossbowman.description} to "高性能なクロスボウを扱うことができる"
+    set {kits.Crossbowman.mhp} to 16
+    set {kits.Crossbowman.head} to leather helmet
+    dye {kits.Crossbowman.head} green
+    set {kits.Crossbowman.chest} to chainmail chestplate
+    set {kits.Crossbowman.legs} to chainmail leggings
+    set {kits.Crossbowman.feet} to leather boots
+
+    delete {kits.Crossbowman.items::*}
+    add crossbow of Quick Charge 3 named "<red>達人のクロスボウ" to {kits.Crossbowman.items::*}
+    enchant {kits.Crossbowman.items::1} with Multishot 1
+    enchant {kits.Crossbowman.items::1} with Piercing 4
+    add 32 arrow to {kits.Crossbowman.items::*}
+    add {items::Goods} to {kits.Crossbowman.items::*}

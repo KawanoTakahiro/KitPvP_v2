@@ -1,0 +1,48 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Emissary":
+        add "Emissary" to {kitlist::*}
+    set {kits.Emissary.rank} to "Occult"
+    set {kits.Emissary.description} to "ウィザー付与による攻撃で回復することができる"
+    set {kits.Emissary.mhp} to 14
+    set {kits.Emissary.head} to wither skeleton skull
+    set {kits.Emissary.chest} to leather chestplate
+    dye {kits.Emissary.chest} black
+    set {kits.Emissary.legs} to leather leggings
+    dye {kits.Emissary.chest} black
+    set {kits.Emissary.feet} to leather boots
+    dye {kits.Emissary.chest} black
+
+    delete {kits.Emissary.items::*}
+    add stone sword to {kits.Emissary.items::*}
+    add bone named "<purple>侵食の杖" with lore "右クリック時:満腹度2.5消費" and "ウィザー状態になる弾を発射" to {kits.Emissary.items::*}
+    add {items::AttackWand} to {kits.Emissary.items::*}
+    add nether brick item named "<purple>侵食のアミュレット" with lore "常時:敵がウィザーでダメージを受けたとき回復" to {kits.Emissary.items::*}
+
+    delete {kits.Emissary.eval::*}
+    add "apply Absorption 3 to player for 80000 seconds" to {kits.Emissary.eval::*}
+
+
+on damage:
+	victim is a player
+	damage was caused by wither
+	loop all players:
+		loop items in loop-player's inventory:
+			name of loop-item contains "侵食のアミュレット"
+			set {_has} to 1
+			exit loop
+		{_has} is set
+		heal loop-player by 1 hearts
+
+on rightclick with bone:
+	if name of player's tool contains "侵食の杖":
+		player's food level >= 2.5
+		remove 2.5 from player's food level
+		make player shoot an item projectile of wither skeleton skull at speed 1
+
+on item hit:
+	event-item is wither skeleton skull
+	play 100 mob spawner flames at event-location in radius of 5
+	loop all entities in radius 5 around event-location:
+		loop-entity is not player
+		apply Wither 2 to loop-entity for 5 seconds

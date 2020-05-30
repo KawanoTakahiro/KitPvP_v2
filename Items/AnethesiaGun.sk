@@ -1,0 +1,19 @@
+on script load:
+    set {items::AnethesiaGun} to gold hoe named "<lime>麻酔銃" with lore "右クリック時：麻酔銃を発射。" and "ヒット時：移動速度低下・攻撃速度低下・盲目を10秒付与"
+
+on rightclick:
+    name of player's tool contains "麻酔銃"
+    cancel event
+    player has an arrow
+    shoot an arrow from player at speed 2
+    remove 1 arrow from player
+
+on shoot:
+    name of shooter's tool contains "麻酔銃"
+    set {projectiles::%UUID of projectile%.name} to "麻酔弾"
+
+on damage:
+    {projectiles::%UUID of projectile%.name} is "麻酔弾"
+    apply Slow 1 to victim for 10 seconds
+    apply Mining Fatigue 2 to victim for 10 seconds
+    apply Blindness 1 to victim for 10 seconds

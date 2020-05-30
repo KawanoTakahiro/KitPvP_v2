@@ -1,0 +1,25 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Gladiator":
+        add "Gladiator" to {kitlist::*}
+    set {kits.Gladiator.rank} to "Element"
+    set {kits.Gladiator.description} to "火炎属性を持つ攻撃を得意とし、戦場を駆け回る"
+    set {kits.Gladiator.mhp} to 24
+    set {kits.Gladiator.head} to leather helmet named "<orange>古代ローマのヘルム"
+    dye {kits.Gladiator.head} red
+    add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:111,UUIDMost:9}]}" to nbt of {kits.Gladiator.head}
+    set {kits.Gladiator.chest} to gold chestplate
+    add "{AttributeModifiers:[{Slot:chest,AttributeName:generic.knockbackResistance,Name:generic.knockbackResistance,Amount:1,Operation:0,UUIDLeast:12333465,UUIDMost:262266}]}" to nbt of {kits.Gladiator.chest}
+    set {kits.Gladiator.legs} to iron leggings
+    set {kits.Gladiator.feet} to leather boots
+    dye {kits.Gladiator.feet} orange
+
+    delete {kits.Gladiator.items::*}
+    add stone sword of Fire Aspect 1 named "<orange>グラディエーターズソード" to {kits.Gladiator.items::*}
+    add bow of Flame 1 named "<orange>グラディエーターズボウ" with lore "攻撃時/被ダメージ時：満腹度が低いほどダメージ増加" to {kits.Gladiator.items::*}
+    add 24 arrow to {kits.Gladiator.items::*}
+    add {items::LightFoot} to {kits.Gladiator.items::*}
+
+    delete {kits.Gladiator.eval::*}
+    add "apply Jump 2 to player for 80000 seconds" to {kits.Gladiator.eval::*}
+    add "apply Speed 2 to player for 80000 seconds" to {kits.Gladiator.eval::*}

@@ -1,0 +1,4 @@
+every 2 seconds:
+    loop players:
+        {%loop-player%.SpecialStates::NoFoodRegen} is not set
+        add 1 to loop-player's food level

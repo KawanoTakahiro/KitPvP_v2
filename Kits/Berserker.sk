@@ -1,0 +1,32 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Berserker":
+        add "Berserker" to {kitlist::*}
+    set {kits.Berserker.rank} to "Myth"
+    set {kits.Berserker.description} to "HPが減るほど強くなる"
+    set {kits.Berserker.mhp} to 16
+    set {kits.Berserker.head} to jack-o-lantern
+    set {kits.Berserker.chest} to leather chestplate
+    add "{AttributeModifiers:[{Slot:chest,AttributeName:generic.knockbackResistance,Name:generic.knockbackResistance,Amount:1,Operation:0,UUIDLeast:123465,UUIDMost:2666}]}" to nbt of {kits.Berserker.chest}
+    set {kits.Berserker.legs} to chainmail leggings
+    dye {kits.Berserker.chest} (178, 45, 53)
+    
+    delete {kits.Berserker.items::*}
+    add iron axe named "<red>狂戦士の斧" with lore "被ダメージ時：体力に応じて攻撃力、攻撃速度上昇" to {kits.Berserker.items::*}
+
+    delete {kits.Berserker.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Berserker.eval::*}
+
+on damage:
+    loop items in victim's inventory:
+        name of loop-item contains "狂戦士の斧"
+        set {_has} to 1
+        exit loop
+    {_has} is set
+    wait 1 tick
+    if victim's health is less than 4:
+        apply Strength 2 to victim for 80000 seconds
+        apply Haste 20 to victim for 80000 seconds
+    else if victim's health is less than 10:
+        apply Strength 1 to victim for 80000 seconds
+        apply Haste 10 to victim for 80000 seconds

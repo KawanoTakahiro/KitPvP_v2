@@ -1,0 +1,23 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Cyclops":
+        add "Cyclops" to {kitlist::*}
+    set {kits.Cyclops.rank} to "Bizarre"
+    set {kits.Cyclops.description} to "高い体力と攻撃力を誇るスローアタッカー"
+    set {kits.Cyclops.mhp} to 28
+    set {kits.Cyclops.head} to {heads::cyclops}
+    set {kits.Cyclops.legs} to leather leggings
+    dye {kits.Cyclops.legs} white
+
+    delete {kits.Cyclops.items::*}
+    add oak log named "<orange>丸太" to {kits.Cyclops.items::*}
+    add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:10,Operation:0,UUIDLeast:78921,UUIDMost:11378654},{Slot:mainhand,AttributeName:generic.attackSpeed,Name:generic.attackSpeed,Amount:-3.5,Operation:0,UUIDLeast:33333,UUIDMost:34555}]}" to nbt of {kits.Cyclops.items::1}
+
+    delete {kits.Cyclops.eval::*}
+    add "apply Strength 1 to player for 80000 seconds" to {kits.Cyclops.eval::*}
+    add "apply Slow 2 to player for 80000 seconds" to {kits.Cyclops.eval::*}
+    add "apply Mining Fatigue 5 to player for 80000 seconds" to {kits.Cyclops.eval::*}
+
+on rightclick with oak log:
+    name of player's tool contains "丸太"
+    cancel event 

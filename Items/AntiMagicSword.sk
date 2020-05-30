@@ -1,0 +1,8 @@
+on script load:
+    set {items::AntiMagicSword} to diamond sword named "<magenta>封魔剣" with lore "攻撃時：ダメージ1。食料レベルを1減少"
+
+on damage:
+	attacker's tool is diamond sword
+	name of attacker's tool contains "封魔剣"
+	set damage to 1
+	remove 1 from victim's food meter

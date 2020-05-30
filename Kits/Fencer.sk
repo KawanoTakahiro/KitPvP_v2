@@ -1,0 +1,26 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Fencer":
+        add "Fencer" to {kitlist::*}
+    set {kits.Fencer.rank} to "Bizarre"
+    set {kits.Fencer.description} to "回避性能と連撃性能が高い"
+    set {kits.Fencer.mhp} to 16
+    set {kits.Fencer.chest} to leather chestplate
+    set {kits.Fencer.legs} to chainmail leggings
+    set {kits.Fencer.feet} to chainmail boots
+
+    delete {kits.Fencer.items::*}
+    add iron sword named "<light aqua>レイピア" to {kits.Fencer.items::*}
+    add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:3,Operation:0,UUIDLeast:22222,UUIDMost:11466},{Slot:mainhand,AttributeName:generic.attackSpeed,Name:generic.attackSpeed,Amount:-2,Operation:0,UUIDLeast:888,UUIDMost:111358}]}" to nbt of {kits.Fencer.items::1}
+    add {items::LightFoot} to {kits.Fencer.items::*}
+    add {items::Goods} to {kits.Fencer.items::*}
+
+    delete {kits.Fencer.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Fencer.eval::*}
+    add "apply Jump 1 to player for 80000 seconds" to {kits.Fencer.eval::*}
+
+on damage:
+    attacker's tool is Iron Sword
+    name of attacker's tool contains "レイピア"
+    wait 1 tick
+    set victim's no damage ticks to 15
