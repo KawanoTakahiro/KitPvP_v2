@@ -19,7 +19,14 @@ on script load:
     delete {kits.Assasin.eval::*}
     add "apply Night Vision 1 to player for 80000 seconds" to {kits.Assasin.eval::*}
 
+    set {kits.Assasin.wish.offhand} to book named "<black>暗殺術" with lore "攻撃時：背後からダメージを与えた場合ダメージ1.2倍"
+
 on damage:
     name of attacker's tool contains "暗殺者のナイフ"
     victim's facing is attacker's facing
     set damage to damage * 5
+
+on damage:
+    name of attacker's offhand tool contains "暗殺術"
+    victim's facing is attacker's facing
+    set damage to damage * 1.2

@@ -10,13 +10,17 @@ on script load:
     add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:718654}]}" to nbt of {kits.Achilles.head}
     set {kits.Achilles.legs} to leather leggings
     dye {kits.Achilles.legs} white
+
     delete {kits.Achilles.items::*}
     add stone sword to {kits.Achilles.items::*}
     add Bow to {kits.Achilles.items::*}
     add 16 Arrow to {kits.Achilles.items::*}
     add light blue dye of Fortune 3 named "<blue>ステュクスの加護" with lore "被ダメージ時(75%%)：攻撃を回避する" to {kits.Achilles.items::*}
+
     delete {kits.Achilles.eval::*}
     add "apply Speed 1 to player for 80000 seconds" to {kits.Achilles.eval::*}
+
+    set {kits.Achilles.wish.offhand} to light blue dye of Fortune 1 named "<blue>ステュクスの雫" with lore "被ダメージ時：(10%%)攻撃を回避する"
 
 on damage:
     victim is a player
@@ -27,6 +31,15 @@ on damage:
         exit loop
     {_has} is set
     chance of 75%:
+        cancel event
+        message "攻撃を回避した！" to victim
+        message "攻撃を回避された！" to attacker
+
+on damage:
+    victim is a player
+    victim's offhand tool is light blue dye
+    name of victim's offhand tool contains "ステュクスの雫"
+    chance of 10%:
         cancel event
         message "攻撃を回避した！" to victim
         message "攻撃を回避された！" to attacker

@@ -10,29 +10,20 @@
 
 on script load:
     wait 1 tick
-    # キット一覧登録用
     if {kitlist::*} doesn't contain "Template":
         add "Template" to {kitlist::*}
-    # キットのランク Element/Bizarre/Occult/Myth/Eclipseの順
     set {kits.Template.rank} to "ランク"
-    # キットの説明　1,2文
     set {kits.Template.description} to "キットの説明"
-    # キットの最大HP ハートの個数
     set {kits.Template.mhp} to 20
-    # キットの装備
     set {kits.Template.head} to {heads::kitname}
     dye {kits.Template.head} red
     add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:718654}]}" to nbt of {kits.Template.head}
-
     set {kits.Template.chest} to leather chestplate of Unbreaking 5
     dye {kits.Template.chest} white
-
     set {kits.Template.legs} to leather leggings
     dye {kits.Template.legs} white
-
     set {kits.Template.feet} to leather boots
     dye {kits.Template.feet} white
-
     set {kits.Template.offhand} to shield
     add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.Template.offhand}
 

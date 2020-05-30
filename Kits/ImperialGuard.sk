@@ -1,0 +1,25 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "ImperialGuard":
+        add "ImperialGuard" to {kitlist::*}
+    set {kits.ImperialGuard.rank} to "Element"
+    set {kits.ImperialGuard.description} to "敵との距離が近いほどダメージが上昇する"
+    set {kits.ImperialGuard.mhp} to 20
+    set {kits.ImperialGuard.head} to iron helmet
+    set {kits.ImperialGuard.chest} to iron chestplate of Projectile Protection 4
+    set {kits.ImperialGuard.legs} to iron leggings of Thorns 1
+    set {kits.ImperialGuard.feet} to iron boots
+    set {kits.ImperialGuard.offhand} to shield
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.ImperialGuard.offhand}
+
+    delete {kits.ImperialGuard.items::*}
+    add {items::Spear} to {kits.ImperialGuard.items::*}
+    add stone sword of Knockback 2 named "<light blue>近衛兵の剣" with lore "攻撃時：近いほどダメージ増加" to {kits.ImperialGuard.items::*}
+    add {items::Goods} to {kits.ImperialGuard.items::*}
+
+    delete {kits.ImperialGuard.eval::*}
+    add "Slow 1 to player for 80000 seconds" to {kits.ImperialGuard.eval::*}
+
+on damage:
+    name of attacker's tool contains "近衛兵の剣"
+    set damage to damage * max(0, 2 - distance between attacker and victim / 4)

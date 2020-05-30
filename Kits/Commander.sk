@@ -13,9 +13,9 @@ on script load:
     dye {kits.Commander.feet} black
 
     delete {kits.Commander.items::*}
-    add 4 zombie spawn egg to {kits.Commander.items::*}
-    add 4 skeleton spawn egg to {kits.Commander.items::*}
-    add 4 slime spawn egg to {kits.Commander.items::*}
+    add 4 zombie spawn egg named "<green>下級ゾンビ" to {kits.Commander.items::*}
+    add 4 skeleton spawn egg named "<light gray>下級スケルトン" to {kits.Commander.items::*}
+    add 4 slime spawn egg named "<lime>下級スライム" to {kits.Commander.items::*}
     add wood sword of Knockback 2 to {kits.Commander.items::*}
     add 4 harming splash potion to {kits.Commander.items::*}
     add {items::LeaderWand} to {kits.Commander.items::*}

@@ -1,0 +1,35 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Knight":
+        add "Knight" to {kitlist::*}
+    set {kits.Knight.rank} to "Element"
+    set {kits.Knight.description} to "馬に乗り戦う。馬に乗ってる間、被ダメージが減少する"
+    set {kits.Knight.mhp} to 20
+    set {kits.Knight.head} to light blue standing banner
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.Knight.head}
+    set {kits.Knight.chest} to iron chestplate
+    set {kits.Knight.legs} to iron leggings
+    set {kits.Knight.feet} to iron boots
+    set {kits.Knight.offhand} to shield of Knockback 2
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.Knight.offhand}
+
+    delete {kits.Knight.items::*}
+    add stone sword to {kits.Knight.items::*}
+    add horse spawn egg named "白馬" with lore "右クリック時：乗るとダメージ軽減をする白馬をスポーンする" to {kits.Knight.items::*}
+    add {items::Goods} to {kits.Knight.items::*}
+
+on damage:
+    vehicle of victim is horse
+    name of vehicle of victim contains "白馬"
+    set damage to damage / 2
+
+on rightclick with Horse spawn egg:
+    name of player's tool contains "白馬"
+    cancel event
+    spawn Horse at player
+    add "{Variant:0, Tame:1,SaddleItem:{id:saddle,Count:1},ArmorItem:{id:iron_horse_armor,Count:1}}" to nbt of last spawned entity
+    set name of last spawned entity to "%player%の白馬"
+    set max health of last spawned entity to 20
+    heal last spawned entity
+    set {mobs::%UUID of last spawned entity%.owner} to player
+    remove 1 of tool from tool

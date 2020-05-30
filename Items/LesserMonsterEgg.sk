@@ -1,0 +1,32 @@
+on script load:
+    set {items::LesserZombieEgg} to zombie spawn egg named "<green>下級ゾンビ"
+    set {items::LesserSkeletonEgg} to skeleton spawn egg named "<green>下級スケルトン"
+    set {items::LesserSlimeEgg} to slime spawn egg named "<green>下級スライム"
+
+
+on rightclick with zombie spawn egg:
+    name of player's tool contains "下級ゾンビ"
+    cancel event
+    spawn zombie at player
+    set name of last spawned entity to "%player%のゾンビ"
+    set last spawned entity's helmet to leather helmet
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+    remove 1 of tool from tool
+
+on rightclick with skeleton spawn egg:
+    name of player's tool contains "下級スケルトン"
+    cancel event
+    spawn skeleton at player
+    set name of last spawned entity to "%player%のスケルトン"
+    set last spawned entity's helmet to leather helmet
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+    remove 1 of tool from tool
+
+on rightclick with Slime spawn egg:
+    name of player's tool contains "下級スライム"
+    cancel event
+    spawn Slime at player
+    add "{Size:3}" to nbt of last spawned entity
+    set name of last spawned entity to "%player%のスライム"
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+    remove 1 of tool from tool

@@ -48,14 +48,19 @@ on rightclick on redstone block:
     set {_kit} to {%player%.kit}
     if {kits.%{_kit}%.rank} is "Element":
         heal player by max health of player * 0.5
+        add 5 to player's food level
     if {kits.%{_kit}%.rank} is "Bizarre":
         heal player by max health of player * 0.4
+        add 4 to player's food level
     if {kits.%{_kit}%.rank} is "Occult":
         heal player by max health of player * 0.3
+        add 3 to player's food level
     if {kits.%{_kit}%.rank} is "Myth":
         heal player by max health of player * 0.25
+        add 2.5 to player's food level
     if {kits.%{_kit}%.rank} is "Eclipse":
         heal player by max health of player * 0.2
+        add 2 to player's food level
     wait 10 seconds
     set event-block to redstone block
 
@@ -86,5 +91,9 @@ on rightclick on anvil:
     cancel event
 
 on place:
+    name of player's tool exists
+    cancel event
+
+on rightclick:
     name of player's tool exists
     cancel event

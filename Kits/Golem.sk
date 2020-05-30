@@ -14,32 +14,19 @@ on script load:
     dye {kits.Golem.feet} (34, 32, 37)
 
     delete {kits.Golem.items::*}
-    add cobblestone of Knockback 3 named "<gray>ゴーレムの腕" with lore "攻撃時：1ダメージ食らう。" to {kits.Golem.items::*}
+    add cobblestone of Knockback 3 named "<gray>ゴーレムの腕" with lore "攻撃時：1ダメージ食らう。" and "右クリック時：1ダメージ食らう。当たると1.5ダメージ与える雪玉を投げる" to {kits.Golem.items::*}
     add "{AttributeModifiers:[{Slot:mainhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:11,Operation:0,UUIDLeast:70089521,UUIDMost:7865114}]}" to nbt of {kits.Golem.items::1}
-    set {kits.Golem.offhand} to melon seeds named "<gray>石つぶて" with lore "右クリック時：1ダメージ食らう。当たると1.5ダメージ与える飛び道具を投げる"
     add {items::MineralMark} to {kits.Golem.items::*}
 
     delete {kits.Golem.eval::*}
     add "apply Slow 1 to player for 80000 seconds" to {kits.Golem.eval::*}
 
-on swap hand item:
-    name of player's tool contains "ゴーレムの腕"
-    cancel event
-
-on tool change:
-    {%player%.kit} is "Golem"
-    wait 1 tick
-    player's tool is air
-    remove a cobblestone from player
-    set player's tool to {kits.Golem.items::1}
-
 on damage:
     name of attacker's tool contains "ゴーレムの腕"
     damage attacker by 1
 
-on rightclick:
-    player's offhand tool is melon seeds
-    name of player's offhand tool contains "石つぶて"
+on rightclick with cobblestone:
+    name of player's tool contains "ゴーレムの腕"
     {%player%.StoneThrow} is not set
     set {%player%.StoneThrow} to true
     damage player by 1
@@ -49,8 +36,9 @@ on rightclick:
         wait 1 tick
     wait 0.5 second
     delete {%player%.StoneThrow}
+
 on shoot:
-    name of shooter's offhand tool contains "石つぶて"
+    name of shooter's tool contains "ゴーレムの腕"
     set {projectiles::%UUID of projectile%} to "石つぶて"
     set {projectiles::%UUID of projectile%.shooter} to shooter
     wait 1 tick

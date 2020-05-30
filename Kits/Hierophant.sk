@@ -1,0 +1,42 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Hierophant":
+        add "Hierophant" to {kitlist::*}
+    set {kits.Hierophant.rank} to "Myth"
+    set {kits.Hierophant.description} to "自分の身代わりとなる信者を生み出す"
+    set {kits.Hierophant.mhp} to 14
+    set {kits.Hierophant.head} to gold helmet
+    set {kits.Hierophant.chest} to leather chestplate
+    dye {kits.Hierophant.chest} red
+    set {kits.Hierophant.legs} to leather leggings
+    dye {kits.Hierophant.legs} red
+    set {kits.Hierophant.feet} to leather boots
+    dye {kits.Hierophant.feet} blue
+
+    delete {kits.Hierophant.items::*}
+    add gold sword to {kits.Hierophant.items::*}
+    add 4 vindicator spawn egg named "信者" with lore "右クリック時：攻撃を肩代わりする信者をスポーンする" to {kits.Hierophant.items::*}
+    add 4 strong health splash potion to {kits.Hierophant.items::*}
+
+    delete {kits.Hierophant.eval::*}
+    add "delete {%%player%%.HierophantBelievers::*}" to {kits.Hierophant.eval::*}
+
+on damage:
+    {%victim%.HierophantBelievers::*} exists
+    loop {%victim%.HierophantBelievers::*}:
+        if loop-value is not alive:
+            remove loop-value from {%victim%.HierophantBelievers::*}
+            continue
+        damage loop-value by damage
+        cancel event
+        exit loop
+
+
+on rightclick with vindicator spawn egg:
+    name of player's tool contains "信者"
+    cancel event
+    spawn vindicator at player
+    set name of last spawned entity to "%player%の信者"
+    set {mobs::%UUID of last spawned entity%.owner} to player
+    add last spawned entity to {%player%.HierophantBelievers::*}
+    remove 1 of tool from tool

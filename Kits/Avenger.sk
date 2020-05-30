@@ -19,3 +19,6 @@ on script load:
 
     delete {kits.Avenger.eval::*}
     add "set {%%player%%.AvengeSoulValue} to 0" to {kits.Avenger.eval::*}
+
+    set {kits.Avenger.wish.offhand} to blaze powder named "<orange>敵討ち"
+    add "{AttributeModifiers:[{Slot:offhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:444444,UUIDMost:71114}]}" to nbt of {kits.Avenger.wish.offhand}

@@ -26,6 +26,8 @@ on script load:
     add "apply Strength 1 to player for 80000 seconds" to {kits.Beast.eval::*}
     add "apply Resistance 1 to player for 80000 seconds" to {kits.Beast.eval::*}
 
+    set {kits.Beast.wish.offhand} to beef named "<orange>Occult級獣肉" with lore "常時：HPが半分以下になったとき、0.5秒後HP・満腹度5回復し消費"
+
 on damage:
     name of attacker's tool contains "鋭い爪"
     apply Wither 1 to victim for 2 seconds
@@ -35,3 +37,12 @@ on rightclick:
     loop entities in radius 30 around player:
         apply Glowing 3 to loop-entity for 10 seconds
     remove 1 rabbit from player
+
+on damage:
+    name of victim's offhand tool contains "Occult級獣肉"
+    wait 1 tick
+    health of victim <= max health of victim / 2
+    delete victim's offhand tool
+    wait 9 tick
+    heal victim by 5
+    add 5 to victim's food level

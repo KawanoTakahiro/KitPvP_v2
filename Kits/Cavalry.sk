@@ -14,7 +14,7 @@ on script load:
     add {items::Spear} to {kits.Cavalry.items::*}
     add Bow to {kits.Cavalry.items::*}
     add red standing banner named "<orange>突貫" with lore "右クリック時：馬に乗っている場合前方に突っ込む" to {kits.Cavalry.items::*}
-    add horse spawn egg to {kits.Cavalry.items::*}
+    add horse spawn egg named "<orange>栗毛" to {kits.Cavalry.items::*}
     add 32 arrow to {kits.Cavalry.items::*}
     add {items::Goods} to {kits.Cavalry.items::*}
 
@@ -43,3 +43,14 @@ on rightclick with red standing banner:
             send action bar "%{%player%.Rush.cooltime}%" to player
     delete {%player%.Rush.cooltime}
     delete {%player%.Rush.vehicle}
+
+on rightclick with Horse spawn egg:
+    name of player's tool contains "栗毛"
+    cancel event
+    spawn Horse at player
+    add "{Variant:2, Tame:1,SaddleItem:{id:saddle,Count:1}}" to nbt of last spawned entity
+    set name of last spawned entity to "%player%の栗毛馬"
+    set max health of last spawned entity to 20
+    heal last spawned entity
+    set {mobs::%UUID of last spawned entity%.owner} to player
+    remove 1 of tool from tool

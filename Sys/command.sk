@@ -70,6 +70,7 @@ command /effecttime <number>:
 
 command /kit <text> <integer=0>:
 	trigger:
+
 		set {_leng} to length of arg-1
 		loop sorted {kitlist::*}:
 			set {_cut} to the first {_leng} characters of "%loop-value%"
@@ -91,6 +92,7 @@ command /kit <text> <integer=0>:
 		delete player's inventory
 		execute console command "/effect clear %player%"
 		delete {%player%.SpecialStates::*}
+		set {_prekit} to {%player%.kit}
 		set {%player%.kit} to {_kit}
 		apply Saturation 100 to player for 1 second
 
@@ -104,12 +106,39 @@ command /kit <text> <integer=0>:
 			give player loop-value
 		loop {kits.%{_kit}%.eval::*}:
 			evaluate loop-value
+		
+		# DyingWishシステム
+		if player's helmet is air:
+			set player's helmet to {kits.%{_prekit}%.wish.head}
+		else:
+			give player {kits.%{_prekit}%.wish.head}
+
+		if player's chestplate is air:
+			set player's chestplate to {kits.%{_prekit}%.wish.chest}
+		else:
+			give player {kits.%{_prekit}%.wish.chest}
+
+		if player's leggings is air:
+			set player's leggings to {kits.%{_prekit}%.wish.legs}
+		else:
+			give player {kits.%{_prekit}%.wish.legs}
+
+		if player's boots is air:
+			set player's boots to {kits.%{_prekit}%.wish.feet}
+		else:
+			give player {kits.%{_prekit}%.wish.feet}
+		
+		if player's offhand tool is air:
+			set player's offhand tool to {kits.%{_prekit}%.wish.offhand}
+		else:
+			give player {kits.%{_prekit}%.wish.offhand}
 
 		set {_rank} to {kits.%{_kit}%.rank}
+		set {_prerank} to {kits.%{_prekit}%.rank}
 		message "<yellow>You've taken <Italic>%{_kit}%"
-		message "Kit Name:%{_kit}%"
-		message "Kit Rank:<%{Rank.%{_rank}%.color}%>%{_rank}%"
+		message "Kit Name:<%{Rank.%{_rank}%.color}%>%{_kit}%"
 		message "説明：%{kits.%{_kit}%.description}%"
+		message "遺志：<%{Rank.%{_prerank}%.color}%>%{_prekit}%"
 
 		wait 1 tick
 		heal player

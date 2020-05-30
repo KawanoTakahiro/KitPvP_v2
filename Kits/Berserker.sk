@@ -17,6 +17,10 @@ on script load:
     delete {kits.Berserker.eval::*}
     add "apply Speed 1 to player for 80000 seconds" to {kits.Berserker.eval::*}
 
+    set {kits.Berserker.wish.offhand} to iron axe named "<red>狂化"
+    add "{AttributeModifiers:[{Slot:offhand,AttributeName:generic.attackSpeed,Name:generic.attackSpeed,Amount:1,Operation:0,UUIDLeast:166,UUIDMost:2666}]}" to nbt of {kits.Berserker.wish.offhand}
+    
+
 on damage:
     loop items in victim's inventory:
         name of loop-item contains "狂戦士の斧"

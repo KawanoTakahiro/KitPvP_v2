@@ -1,0 +1,46 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "King":
+        add "King" to {kitlist::*}
+    set {kits.King.rank} to "Bizarre"
+    set {kits.King.description} to "強力な護衛とともに戦う"
+    set {kits.King.mhp} to 20
+    set {kits.King.head} to gold helmet
+    set {kits.King.chest} to leather chestplate
+    dye {kits.King.chest} red
+    set {kits.King.legs} to leather leggings
+    dye {kits.King.legs} green
+    set {kits.King.feet} to leather boots
+    dye {kits.King.feet} black
+    set {kits.King.offhand} to shield
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.King.offhand}
+
+
+    delete {kits.King.items::*}
+    add gold sword of Unbreaking 2 to {kits.King.items::*}
+    add 3 zombie spawn egg named "<light blue>王直属護衛" with lore "右クリック時：護衛対象が攻撃されたとき、強化されターゲットにする" to {kits.King.items::*}
+
+    delete {kits.King.eval::*}
+    add "Slow 1 to player for 80000 seconds" to {kits.King.eval::*}
+    add "delete {%%player%%.GuardiansOfKing::*}" to {kits.King.eval::*}
+
+on damage:
+    {%victim%.GuardiansOfKing::*} exists
+    loop {%victim%.GuardiansOfKing::*}:
+        apply Speed 3 to loop-value for 5 seconds
+        apply Strength 1 to loop-value for 5 seconds
+        set target of loop-value to attacker
+
+on rightclick with zombie spawn egg:
+    name of player's tool contains "王直属護衛"
+    cancel event
+    spawn zombie at player
+    set tool of last spawned entity to diamond sword
+    equip last spawned entity with player skull
+    equip last spawned entity with diamond chestplate
+    equip last spawned entity with diamond leggings
+    equip last spawned entity with diamond boots
+    set name of last spawned entity to "%player%の直属護衛兵"
+    set {mobs::%UUID of last spawned entity%.owner} to player
+    add last spawned entity to {%player%.GuardiansOfKing::*}
+    remove 1 of tool from tool

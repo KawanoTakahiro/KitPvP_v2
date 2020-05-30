@@ -24,6 +24,11 @@ on script load:
     add "apply Slow 3 to player for 80000 seconds" to {kits.Anomalocaris.eval::*}
     add "apply Jump 200 to player for 80000 seconds" to {kits.Anomalocaris.eval::*}
 
+    set {kits.Anomalocaris.wish.feet} to leather boots named "<gray>古代生物の足"
+    dye {kits.Anomalocaris.wish.feet} gray
+    add "{AttributeModifiers:[{Slot:feet,AttributeName:generic.knockbackResistance,Name:generic.knockbackResistance,Amount:0.5,Operation:0,UUIDLeast:123465,UUIDMost:266126}]}" to nbt of {kits.Anomalocaris.wish.feet}
+
+
 on damage:
     chance of 33%:
         loop items in victim's inventory:

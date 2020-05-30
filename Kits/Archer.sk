@@ -20,6 +20,8 @@ on script load:
     add "apply Night Vision 1 to player for 80000 seconds" to {kits.Archer.eval::*}
     add "apply Speed 1 to player for 80000 seconds" to {kits.Archer.eval::*}
 
+    set {kits.Archer.wish.offhand} to dispenser named "矢生産機" with lore "5秒毎：矢を生産する"
+
 on click with bowl:
     name of player's tool contains "弾丸キャッチ"
     {ChatchBullet.%player%} is not set
@@ -41,3 +43,9 @@ on damage:
     cancel event
     delete projectile
     give arrow to victim
+
+every 5 seconds:
+    loop all players:
+        loop-player's offhand tool is dispenser
+        name of loop-player's offhand tool contains "矢生産機"
+        give 1 arrow to loop-player

@@ -1,0 +1,57 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Lich":
+        add "Lich" to {kitlist::*}
+    set {kits.Lich.rank} to "Occult"
+    set {kits.Lich.description} to "高い再生能力を持ち、倒した敵をゾンビとして蘇らせる事ができる"
+    set {kits.Lich.mhp} to 12
+    set {kits.Lich.head} to {heads::lich}
+    set {kits.Lich.chest} to leather chestplate
+    dye {kits.Lich.chest} (80, 0, 80)
+    set {kits.Lich.legs} to leather leggings
+    dye {kits.Lich.legs} black
+    set {kits.Lich.feet} to leather boots
+    dye {kits.Lich.feet} black
+
+    delete {kits.Lich.items::*}
+    add {items::AttackWand} to {kits.Lich.items::*}
+    add {items::SummonZombie} to {kits.Lich.items::*}
+    add {items::SummonSkeleton} to {kits.Lich.items::*}
+    add beetroot named "<purple>ネクロマンシー" with lore "右クリック時：満腹度7消費。最後にキルされたキットの装備とHPをしたゾンビを召喚" to {kits.Lich.items::*}
+
+    delete {kits.Lich.eval::*}
+    add "apply Regeneration 2 to player for 80000 seconds" to {kits.Lich.eval::*}
+    add "apply Fire Resistance 1 to player for 80000 seconds" to {kits.Lich.eval::*}
+    add "delete {%%player%%.Necromancy}" to {kits.Lich.eval::*}
+
+#未検証
+
+on rightclick with beetroot:
+    name of player's tool contains "ネクロマンシー"
+    cancel event
+    if player's food level < 7:
+        message "<yellow>満腹度が足りません"
+        stop
+    if {%player%.Necromancy} is not set:
+        message "<yellow>まだ誰も死んでいません"
+        stop
+    remove 7 from player's food level
+    set {_kit} to {%player%.Necromancy}
+    spawn zombie at player
+    set max health of last spawned entity to {kits.%{_kit}%.mhp}
+    equip last spawned entity with {kits.%{_kit}%.head}
+    equip last spawned entity with {kits.%{_kit}%.cehst}
+    equip last spawned entity with {kits.%{_kit}%.legs}
+    equip last spawned entity with {kits.%{_kit}%.feet}
+    set name of last spawned entity to "%player%の%{_kit}%"
+    set {mobs::%UUID of last spawned entity%.owner} to player
+
+on death of player:
+    loop all players:
+        loop items in loop-player's inventory:
+            loop-item contains "ネクロマンシー"
+            set {_has} to true
+            exit loop
+        {_has} exists
+        set {%loop-player%.Necromancy} to {%victim%.kit}
+        message "<purple>%{%victim%.kit}%をネクロマンシーできます" to loop-player

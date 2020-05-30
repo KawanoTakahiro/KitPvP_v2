@@ -26,6 +26,7 @@ on script load:
     add "apply Jump 3 to player for 80000 seconds" to {kits.Angel.eval::*}
     add "apply Glowing 2 to player for 80000 seconds" to {kits.Angel.eval::*}
     
+    set {kits.Angel.wish.head} to {kits.Angel.head}
 
 on shoot:
     name of shooter's tool contains "天弓"

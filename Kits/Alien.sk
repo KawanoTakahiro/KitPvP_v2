@@ -20,9 +20,12 @@ on script load:
     delete {kits.Alien.items::*}
     add golden sword of Unbreaking 1 named "<lime>酸牙" with lore "攻撃時：敵のアーマーに追加ダメージ" to {kits.Alien.items::*}
     add 3 of {potions::acid} to {kits.Alien.items::*}
+    
     delete {kits.Alien.eval::*}
     add "apply Speed 3 to player for 80000 seconds" to {kits.Alien.eval::*}
     add "apply Night Vision 1 to player for 80000 seconds" to {kits.Alien.eval::*}
+    
+    set {kits.Alien.wish.chest} to leather chestplate of Thorns 1 named "エイリアンの表皮"
 
 on damage:
     name of attacker's tool contains "酸牙"
