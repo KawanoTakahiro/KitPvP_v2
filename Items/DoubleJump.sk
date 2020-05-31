@@ -15,3 +15,8 @@ on sneak toggle:
 	while block below location of player is air:
 		wait 2 ticks
 	set {%player%.DoubleJump.value} to 0
+
+on damage:
+	victim has feather
+	damage was caused by fall
+	cancel event

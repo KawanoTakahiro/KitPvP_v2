@@ -1,0 +1,66 @@
+on script load:
+    set {items::SummonZombie} to rotten flesh named "<green>ゾンビ召喚術" with lore "右クリック時：満腹度3消費：ゾンビ召喚"
+    set {items::SummonSkeleton} to bone named "<green>スケルトン召喚術" with lore "右クリック時：満腹度4消費：スケルトン召喚"
+    set {items::SummonHusk} to rotten flesh named "<green>ハスク召喚術" with lore "右クリック時：満腹度3.5消費：ハスク召喚"
+    set {items::SummonDrowned} to nautilus shell named "<green>ドラウンド召喚術" with lore "右クリック時：満腹度4.5消費：ドラウンド召喚"
+    set {items::SummonWitch} to poison potion named "<green>ウィッチ召喚術" with lore "右クリック時：満腹度5消費：ウィッチ召喚"
+    
+
+on rightclick with rotten flesh:
+    name of player's tool contains "ゾンビ召喚"
+    cancel event
+    if player's food level < 4:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 3 from player's food level
+    spawn zombie at player
+    set name of last spawned entity to "%player%のゾンビ"
+    set last spawned entity's helmet to leather helmet
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+
+on rightclick with bone:
+    name of player's tool contains "スケルトン召喚"
+    cancel event
+    if player's food level < 4:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 4 from player's food level
+    spawn skeleton at player
+    set name of last spawned entity to "%player%のスケルトン"
+    set last spawned entity's helmet to leather helmet
+    set {mobs::%UUID of last spawned entity%.owner} to player
+
+on rightclick with rotten flesh:
+    name of player's tool contains "ハスク召喚"
+    cancel event
+    if player's food level < 3.5:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 3.5 from player's food level
+    spawn husk at player
+    set name of last spawned entity to "%player%のハスク"
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+
+on rightclick with nautilus shell:
+    name of player's tool contains "ドラウンド召喚"
+    cancel event
+    if player's food level < 4.5:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 4.5 from player's food level
+    spawn drowned at player
+    set name of last spawned entity to "%player%のドラウンド"
+    set last spawned entity's helmet to leather helmet
+    set last spawned entity's tool to trident
+    set {mobs::%UUID of last spawned entity%.owner} to player	
+
+on rightclick with poison potion:
+    name of player's tool contains "ウィッチ召喚"
+    cancel event
+    if player's food level < 5:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 5 from player's food level
+    spawn witch at player
+    set name of last spawned entity to "%player%のウィッチ"
+    set {mobs::%UUID of last spawned entity%.owner} to player	

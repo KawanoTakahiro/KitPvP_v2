@@ -16,13 +16,13 @@
 	// 	"description": "Log output to console"
 	// }
 	"addItems":{
-		"prefix":"iadd",
+		"prefix":"aitem",
 		"body":[
 			"add $name to {kits.${TM_FILENAME_BASE}.items::*}"
 		]
 	},
 	"addEvals":{
-		"prefix":"eadd",
+		"prefix":"aeval",
 		"body":[
 			"add $name to {kits.${TM_FILENAME_BASE}.evals::*}"
 		]
@@ -87,4 +87,16 @@
 			"set {kits.${TM_FILENAME_BASE}.wish.offhand} to $name"
 		]
 	},
+	"has":{
+		"prefix":"has",
+		"body":[
+			"$player has $item",
+			"loop items in inventory of $player:",
+			"\tloop-item is $item",
+			"\tname of loop-item contains \"$name\"",
+			"\tset {_has} to true",
+			"\texit loop",
+			"{_has} exists"
+		]
+	}
 }

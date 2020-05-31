@@ -21,5 +21,6 @@ on rightclick with Spider spawn egg:
 	set {mobs::%UUID of last spawned entity%.owner} to player	
 	remove 1 of tool from tool
 
-
-
+on damage:
+	attacker is husk
+	remove 1 from attacker's food level

@@ -1,0 +1,27 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Lizardman":
+        add "Lizardman" to {kitlist::*}
+    set {kits.Lizardman.rank} to "Bizarre"
+    set {kits.Lizardman.description} to "敵とのHP差によって攻撃力が増減する"
+    set {kits.Lizardman.mhp} to 24
+    set {kits.Lizardman.head} to {items::lizardman}
+    set {kits.Lizardman.chest} to iron chestplate
+    add "{AttributeModifiers:[{Slot:chest,AttributeName:generic.knockbackResistance,Name:generic.knockbackResistance,Amount:1,Operation:0,UUIDLeast:7777,UUIDMost:244666}]}" to nbt of {kits.Berserker.chest}
+    set {kits.Lizardman.legs} to iron leggings
+    set {kits.Lizardman.feet} to leather boots
+    dye {kits.Lizardman.feet} cyan
+
+    delete {kits.Lizardman.items::*}
+    add stone sword of Knockback 1 named "<light blue>リザードマンズソード" with lore "攻撃時：相手よりHPが低いと攻撃力アップ" to {kits.Lizardman.items::*}
+    add 2 of {items::Amulet} to {kits.Lizardman.items::*}
+
+    delete {kits.Lizardman.eval::*}
+    add "apply Resistance 1 to player for 80000 seconds" to {kits.Lizardman.eval::*}
+    add "apply Night Vision 1 to player for 80000 seconds" to {kits.Lizardman.eval::*}
+
+on damage:
+    name of attacker's tool contains "リザードマンズソード"
+    set {_diff} to (victim's health - attacker's health) / 10
+    set {_mul} to max(-0.5, min(0.5, {_diff}))
+    set damage to damage * (1 + {_mul})

@@ -16,3 +16,4 @@ on damage:
     {projectiles::%UUID of projectile%} is "AttackWand"
     make attacker damage victim by 4
     delete projectile
+    delete {projectiles::%UUID of projectile%}

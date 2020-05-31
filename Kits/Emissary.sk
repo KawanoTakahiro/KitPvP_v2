@@ -44,5 +44,4 @@ on item hit:
 	event-item is wither skeleton skull
 	play 100 mob spawner flames at event-location in radius of 5
 	loop all entities in radius 5 around event-location:
-		loop-entity is not player
 		apply Wither 2 to loop-entity for 5 seconds

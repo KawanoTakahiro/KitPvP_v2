@@ -1,0 +1,22 @@
+on script load:
+    set {items::Reinforcement} to light blue standing banner named "<light blue>増援" with lore "右クリック時：満腹度5消費。ランダムに味方モブを呼ぶ"
+
+on rightclick with light blue standing banner:
+    name of player's tool contains "増援"
+    cancel event
+    if player's food level < 5:
+        message "<yellow>満腹度が足りません"
+        stop
+    remove 5 from player's food level
+    spawn skeleton at player
+    set {_chest::*} to diamond chestplate, iron chestplate, chainmail chestplate and leather chestplate
+    set {_leggings::*} to diamond leggings, iron leggings, chainmail leggings and leather leggings
+    set {_boots::*} to diamond boots, iron boots, chainmail boots and leather boots
+    set {_tool::*} to bow, diamond sword, iron sword, stone sword and wood sword
+    set name of last spawned entity to "%player%の増援兵"
+    set last spawned entity's helmet to player skull
+    set last spawned entity's chestplate to random element of {_chest::*}
+    set last spawned entity's leggings to random element of {_leggings::*}
+    set last spawned entity's boots to random element of {_boots::*}
+    set last spawned entity's tool to random element of {_tool::*}
+    set {mobs::%UUID of last spawned entity%.owner} to player

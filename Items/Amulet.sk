@@ -1,0 +1,15 @@
+on script load:
+    set {items::Amulet} to diamond named "<light blue>お守り" with lore "被ダメージ時：ダメージ無効化し消費"
+
+on damage:
+    victim has diamond
+    loop items in victim's inventory:
+        loop-item is diamond
+        name of loop-item contains "お守り"
+        set {_has} to true
+        exit loop
+    {_has} exists
+    cancel event
+    message "<light blue>お守りがダメージを無効化した" to victim
+    message "<yellow>お守りでダメージを無効化された" to attacker
+    

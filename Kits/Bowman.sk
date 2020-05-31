@@ -22,3 +22,4 @@ on script load:
     add "apply Speed 2 to player for 80000 seconds" to {kits.Bowman.eval::*}
     add "apply Night Vision 1 to player for 80000 seconds" to {kits.Bowman.eval::*}
     add "apply Jump 1 to player for 80000 seconds" to {kits.Bowman.eval::*}
+

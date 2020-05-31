@@ -1,0 +1,32 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Pixie":
+        add "Pixie" to {kitlist::*}
+    set {kits.Pixie.rank} to "Bizarre"
+    set {kits.Pixie.description} to "小柄で透明、敵の向いている方向をかえて邪魔をする"
+    set {kits.Pixie.mhp} to 6
+
+    delete {kits.Pixie.items::*}
+    add arrow named "<magenta>あっちむいてホイ" with lore "攻撃時：敵が反対方向を向く" to {kits.Pixie.items::*}
+    add {items::AttackWand} to {kits.Pixie.items::*}
+    add {items::DoubleJump} to {kits.Pixie.items::*}
+    add ghast tear named "<lime>小柄" with lore "被ダメージ時(33%%):攻撃回避" to {kits.Pixie.items::*}
+
+    delete {kits.Pixie.eval::*}
+    
+    add "apply Speed 3 to player for 80000 seconds" to {kits.Pixie.eval::*}
+    add "apply Absorption 5 to player for 80000 seconds" to {kits.Pixie.eval::*}
+    add "apply Invisibility 1 to player for 80000 seconds" to {kits.Pixie.eval::*}
+
+on damage:
+    victim is a player
+    victim has ghast tear
+    loop items in victim's inventory:
+        name of loop-item contains "小柄"
+        set {_has} to 1
+        exit loop
+    {_has} is set
+    chance of 33%:
+        cancel event
+        message "攻撃を回避した！" to victim
+        message "攻撃を回避された！" to attacker

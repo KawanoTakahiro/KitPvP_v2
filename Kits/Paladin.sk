@@ -1,0 +1,29 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Paladin":
+        add "Paladin" to {kitlist::*}
+    set {kits.Paladin.rank} to "Occult"
+    set {kits.Paladin.description} to "増援を要請し、増援を保護しながらパーティーで戦う"
+    set {kits.Paladin.mhp} to 25
+    set {kits.Paladin.head} to white wool
+    set {kits.Paladin.chest} to iron chestplate
+    set {kits.Paladin.legs} to iron leggings
+    set {kits.Paladin.feet} to iron boots
+    set {kits.Paladin.offhand} to shield named "<light blue>かばいの盾"
+    add "{BlockEntityTag:{Base:3,Patterns:[{Pattern:flo,Color:0},{Pattern:mr,Color:0}]}}" to nbt of {kits.Paladin.offhand}
+
+    delete {kits.Paladin.items::*}
+    add {items::Reinforcement} to {kits.Paladin.items::*}
+    add stone sword of Smite 5 to {kits.Paladin.items::*}
+    add {items::HealWand} to {kits.Paladin.items::*}
+
+    delete {kits.Paladin.eval::*}
+    add "apply Slow 1 to player for 80000 seconds" to {kits.Paladin.eval::*}
+
+on damage:
+    victim is not ad player
+    {mobs::%UUID of victim%.owner} exists
+    name of {mobs::%UUID of victim%.owner}'s offhand tool contains "かばいの盾"
+    {mobs::%UUID of victim%.owner} is blocking
+    make attacker damage {mobs::%UUID of victim%.owner} by damage
+    message "%victim%の被ダメージを代わりに受けた！" to {mobs::%UUID of victim%.owner}

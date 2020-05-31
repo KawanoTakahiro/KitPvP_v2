@@ -1,0 +1,35 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Phalanx":
+        add "Phalanx" to {kitlist::*}
+    set {kits.Phalanx.rank} to "Occult"
+    set {kits.Phalanx.description} to "増援を要請し、味方が多いほどダメージを軽減して戦う"
+    set {kits.Phalanx.mhp} to 20
+    set {kits.Phalanx.head} to leather helmet named "<orange>古代ローマのヘルム"
+    dye {kits.Phalanx.head} red
+    add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:718654}]}" to nbt of {kits.Phalanx.head}
+    set {kits.Phalanx.chest} to iron chestplate
+    add "{AttributeModifiers:[{Slot:head,AttributeName:generic.knockbackResistance,Name:generic.knockbackResistance,Amount:1,Operation:0,UUIDLeast:12222,UUIDMost:2111}]}" to nbt of {kits.Phalanx.chest}
+    dye {kits.Phalanx.chest} red
+    set {kits.Phalanx.legs} to iron leggings
+    set {kits.Phalanx.feet} to iron boots
+    set {kits.Phalanx.offhand} to shield named "<pink>防衛の盾" with lore "被ダメージ時：周りに味方の数が多いほどダメージ減少"
+    add "{BlockEntityTag:{Base:0,Patterns:[{Pattern:cs,Color:14},{Pattern:ms,Color:14}]}}" to nbt of {kits.Phalanx.offhand}
+
+    delete {kits.Phalanx.items::*}
+    add {items::Spear} to {kits.Phalanx.items::*}
+    add iron sword to {kits.Phalanx.items::*}
+    add {items::Reinforcement} to {kits.Phalanx.items::*}
+
+    delete {kits.Phalanx.eval::*}
+    add "apply Slow 2 to player for 80000 seconds" to {kits.Phalanx.eval::*}
+    add "apply Jump 200 to player for 80000 seconds" to {kits.Phalanx.eval::*}
+
+on damage:
+    victim's offhand tool is shield
+    name of victim's offhand tool contains "防衛の盾"
+    set {_ally} to 0
+    loop all entities in radius 5 around victim:
+        name of loop-entity contains name of victim
+        add 1 to {_ally}
+    set damage to damage * (1 - {_ally} / 10)

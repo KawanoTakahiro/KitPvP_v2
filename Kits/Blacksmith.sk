@@ -16,3 +16,5 @@ on script load:
 
     delete {kits.Blacksmith.eval::*}
     add "apply Fire Resistance 1 to player for 80000 seconds" to {kits.Blacksmith.eval::*}
+
+    set {kits.Blacksmith.wish.chest} to Unbreakable iron chestplate of Protection 3

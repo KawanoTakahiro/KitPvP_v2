@@ -1,0 +1,28 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Mercenary":
+        add "Mercenary" to {kitlist::*}
+    set {kits.Mercenary.rank} to "Element"
+    set {kits.Mercenary.description} to "前金を持っている間攻撃力が増す"
+    set {kits.Mercenary.mhp} to 22
+    set {kits.Mercenary.head} to leather helmet
+    set {kits.Mercenary.chest} to chainmail chestplate
+    set {kits.Mercenary.legs} to leather leggings
+    set {kits.Mercenary.feet} to leather boots
+
+    delete {kits.Mercenary.items::*}
+    add iron axe to {kits.Mercenary.items::*}
+    add 10 gold ingot named "<orange>前金" with lore "キル時：3増加" to {kits.Mercenary.items::*}
+    add "{AttributeModifiers:[{Slot:offhand,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:0.2,Operation:1,UUIDLeast:76777,UUIDMost:244666}]}" to nbt of {kits.Mercenary.items::2}
+
+    delete {kits.Mercenary.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Mercenary.eval::*}
+
+on damage:
+    attacker's offhand tool is gold ingot
+    name of attacker's offhand tool contains "前金"
+    remove 1 of attacker's offhand tool from attacker's offhand tool
+
+on death of player:
+    {%attacker%.kit} is "Mercenary"
+    give 3 of {kits.Mercenary.items::2} to attacker

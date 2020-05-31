@@ -1,0 +1,23 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Necromancer":
+        add "Necromancer" to {kitlist::*}
+    set {kits.Necromancer.rank} to "Occult"
+    set {kits.Necromancer.description} to "高い再生能力を持ち、倒した敵をゾンビとして蘇らせる事ができる"
+    set {kits.Necromancer.mhp} to 20
+    set {kits.Necromancer.head} to wither skeleton skull
+    set {kits.Necromancer.chest} to leather chestplate
+    dye {kits.Necromancer.chest} black
+    set {kits.Necromancer.legs} to leather leggings
+    dye {kits.Necromancer.legs} black
+    set {kits.Necromancer.feet} to leather boots
+    dye {kits.Necromancer.feet} black
+
+    delete {kits.Necromancer.items::*}
+    add wood sword to {kits.Necromancer.items::*}
+    add {items::LeaderWand} to {kits.Necromancer.items::*}
+    add {items::SummonHusk} to {kits.Necromancer.items::*}
+    add {items::SummonDrowned} to {kits.Necromancer.items::*}
+
+    delete {kits.Necromancer.eval::*}
+    

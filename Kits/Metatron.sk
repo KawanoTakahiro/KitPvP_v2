@@ -1,0 +1,38 @@
+on script load:
+    wait 1 tick
+    if {kitlist::*} doesn't contain "Metatron":
+        add "Metatron" to {kitlist::*}
+    set {kits.Metatron.rank} to "Occult"
+    set {kits.Metatron.description} to "前金を持っている間攻撃力が増す"
+    set {kits.Metatron.mhp} to 20
+    set {kits.Metatron.head} to light blue glazed terracotta named "<red>火の柱" with lore "被ダメージ時：周りのブロックを炎上させる"
+    set {kits.Metatron.chest} to iron chestplate
+    set {kits.Metatron.legs} to leather leggings
+    dye {kits.Metatron.legs} (0, 154, 219)
+    set {kits.Metatron.feet} to leather boots
+    dye {kits.Metatron.feet} (214, 0, 119)
+
+    delete {kits.Metatron.items::*}
+    add bow of flame 1 to {kits.Metatron.items::*}
+    add eye of ender named "<yellow>千里眼" with lore "右クリック時：全プレイヤーの透明化解除。発光付与" to {kits.Metatron.items::*}
+    add {items::DoubleJump} to {kits.Metatron.items::*}
+    add 32 arrow to {kits.Metatron.items::*}
+
+    delete {kits.Metatron.eval::*}
+    add "apply Speed 1 to player for 80000 seconds" to {kits.Metatron.eval::*}
+    add "apply Fire Resistance 1 to player for 80000 seconds" to {kits.Metatron.eval::*}
+
+on rightclick with eye of ender:
+    name of player's tool contains "千里眼"
+    loop all players:
+        remove Invisibility from loop-player
+        apply Glowing 1 to loop-player for 80000 seconds
+    remove 1 of tool from tool
+
+on damage:
+    attacker exists
+    victim's helmet is light blue glazed terracotta
+    name of victim's helmet contains "火の柱"
+    loop blocks in radius 3 around victim:
+        block above loop-block is air
+        set block above loop-block to fire
