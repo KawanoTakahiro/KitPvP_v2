@@ -1,15 +1,15 @@
 on script load:
     wait 1 tick
-    if {kitlist::*} doesn't contain "Achilles":
-        add "Achilles" to {kitlist::*}
-    set {kits.Achilles.rank} to "Myth"
-    set {kits.Achilles.description} to "HPが低い代わりに、高確率な回避能力を持つ。"
-    set {kits.Achilles.mhp} to 10
-    set {kits.Achilles.head} to leather helmet named "<orange>古代ローマのヘルム"
-    dye {kits.Achilles.head} red
+    if {kitlist::*} doesn't contain "Dinosaur":
+        add "Dinosaur" to {kitlist::*}
+    set {kits.Dinosaur.rank} to "Myth"
+    set {kits.Dinosaur.description} to "HPが低い代わりに、高確率な回避能力を持つ。"
+    set {kits.Dinosaur.mhp} to 10
+    set {kits.Dinosaur.head} to leather helmet named "<#ee653e>T-Rex"
+    dye {kits.Dinosaur.head} red
     add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:718654}]}" to nbt of {kits.Achilles.head}
-    set {kits.Achilles.legs} to leather leggings
-    dye {kits.Achilles.legs} white
+    set {kits.Dinosaur.legs} to leather leggings
+    dye {kits.Dinosaur.legs} white
 
     delete {kits.Achilles.items::*}
     add stone sword to {kits.Achilles.items::*}
