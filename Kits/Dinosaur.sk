@@ -5,22 +5,22 @@ on script load:
     set {kits.Dinosaur.rank} to "Myth"
     set {kits.Dinosaur.description} to "HPが低い代わりに、高確率な回避能力を持つ。"
     set {kits.Dinosaur.mhp} to 10
-    set {kits.Dinosaur.head} to leather helmet named "<#ee653e>T-Rex"
-    dye {kits.Dinosaur.head} red
+    set {kits.Dinosaur.head}(205, 92,92) to leather helmet named "<orange>T-Rex"
+    dye {kits.Dinosaur.head} (205, 92,92)
     add "{AttributeModifiers:[{Slot:head,AttributeName:generic.attackDamage,Name:generic.attackDamage,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:78654},{Slot:head,AttributeName:generic.armor,Name:generic.armor,Amount:1,Operation:0,UUIDLeast:789521,UUIDMost:718654}]}" to nbt of {kits.Achilles.head}
     set {kits.Dinosaur.legs} to leather leggings
-    dye {kits.Dinosaur.legs} white
+    dye {kits.Dinosaur.legs} (205, 92,92)
 
-    delete {kits.Achilles.items::*}
-    add stone sword to {kits.Achilles.items::*}
-    add Bow to {kits.Achilles.items::*}
-    add 16 Arrow to {kits.Achilles.items::*}
+    delete {kits.Dinosaur.items::*}
+    add stone sword to {kits.Dinosaur.items::*}
+    add Bow to {kits.Dinosaur.items::*}
+    add 16 Arrow to {kits.Dinosaur.items::*}
     add light blue dye of Fortune 3 named "<blue>ステュクスの加護" with lore "被ダメージ時(75%%)：攻撃を回避する" to {kits.Achilles.items::*}
 
-    delete {kits.Achilles.eval::*}
+    delete {kits.Dinosaur.eval::*}
     add "apply Speed 1 to player for 80000 seconds" to {kits.Achilles.eval::*}
 
-    set {kits.Achilles.wish.offhand} to light blue dye of Fortune 1 named "<blue>ステュクスの雫" with lore "被ダメージ時：(10%%)攻撃を回避する"
+    set {kits.Dinosaur.wish.offhand} to light blue dye of Fortune 1 named "<blue>ステュクスの雫" with lore "被ダメージ時：(10%%)攻撃を回避する"
 
 on damage:
     victim is a player
